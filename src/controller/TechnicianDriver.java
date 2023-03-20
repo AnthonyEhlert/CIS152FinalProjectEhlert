@@ -19,8 +19,9 @@ import model.Technician;
  * 					  order.  It also contains a GUI with buttons to assign repairs, complete
  * 					  repairs, and view different reports
  *					 Input: Required information needed to create various technician objects as
- *							well as the information needed to create various repairs job objects.
- *					 Output: Various reports displaying jobs not started, jobs in progress, and completed jobs.
+ *							well as the information needed to create various repair job objects.
+ *					 Output: Window displaying the next repair job along with the technician assigned to it.
+ *							 Various reports displaying jobs not started, jobs in progress, and completed jobs.
  * Academic Honesty	: I attest that this is my original work.
  * I have not used unauthorized source code, either modified or 
  * unmodified. I have not given other fellow student(s) access to
