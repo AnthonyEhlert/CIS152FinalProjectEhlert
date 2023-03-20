@@ -44,7 +44,7 @@ public class Technician {
 	 * This is a Technician constructor that creates a Technician object
 	 * using the passed in id, first name, and last name.
 	 */
-	private Technician(int id, String firstName, String lastName) {
+	public Technician(int id, String firstName, String lastName) {
 		this.id = id;
 		this.fName = firstName;
 		this.lName = lastName;
@@ -91,5 +91,10 @@ public class Technician {
 	 */
 	public void setlName(String lName) {
 		this.lName = lName;
+	}
+
+	@Override
+	public String toString() {
+		return "Technician [id=" + id + ", fName=" + fName + ", lName=" + lName + "]";
 	}
 }
