@@ -26,8 +26,8 @@ public class Technician {
 
 	// DATA MEMBERS
 	private int id;
-	private String fName;
-	private String lName;
+	private String firstName;
+	private String lastName;
 	
 	// CONSTRUCTORS
 
@@ -37,8 +37,8 @@ public class Technician {
 	 */
 	private Technician() {
 		this.id = Integer.MAX_VALUE;
-		this.fName = "No First Name Provided";
-		this.lName = "No Last Name Provided";
+		this.firstName = "No First Name Provided";
+		this.lastName = "No Last Name Provided";
 	}
 	
 	/**
@@ -47,8 +47,8 @@ public class Technician {
 	 */
 	public Technician(int id, String firstName, String lastName) {
 		this.id = id;
-		this.fName = firstName;
-		this.lName = lastName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	// GETTERS AND SETTERS
@@ -69,33 +69,33 @@ public class Technician {
 	/**
 	 * @return the fName
 	 */
-	public String getfName() {
-		return fName;
+	public String getFirstName() {
+		return firstName;
 	}
 
 	/**
 	 * @param fName the fName to set
 	 */
-	public void setfName(String fName) {
-		this.fName = fName;
+	public void setFirstName(String fName) {
+		this.firstName = fName;
 	}
 
 	/**
 	 * @return the lName
 	 */
-	public String getlName() {
-		return lName;
+	public String getLastName() {
+		return lastName;
 	}
 
 	/**
 	 * @param lName the lName to set
 	 */
-	public void setlName(String lName) {
-		this.lName = lName;
+	public void setLastName(String lName) {
+		this.lastName = lName;
 	}
 
 	@Override
 	public String toString() {
-		return "Technician [id=" + id + ", fName=" + fName + ", lName=" + lName + "]";
+		return "Technician [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 }
