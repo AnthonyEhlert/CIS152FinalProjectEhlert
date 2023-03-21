@@ -60,7 +60,7 @@ public class Repair implements Comparable<Repair>{
 		this.tech = null;
 		this.completionDate = null;
 		
-		if (orderNum < 0) {
+		if (orderNum <= 0) {
 			this.orderNum = Integer.MAX_VALUE;
 		} else {
 			this.orderNum = orderNum;
