@@ -135,24 +135,54 @@ public class RepairDriver {
 		
 		System.out.println("\nTechnicians in Queue after completion of repairs: ");
 		for (Technician tech : techQ) {
-			System.out.print(tech.getFirstName() + " " + tech.getLastName() + ", ");
+			System.out.print(tech.getFullName() + ", ");
 		}
 	}
 	
+	/**
+	 * This method assigns a technician from the techQ to the highest priority repair
+	 * in the repairPQ.  The tech that is assigned is removed for the techQ and the
+	 * repair is removed from the repairPQ and placed in the inProgressList
+	 * 
+	 * @param repairPQ - priority queue containing repairs not yet started
+	 * @param techQ - queue containing available technicians
+	 * @param inProgressList - linked list to store repair jobs in progress
+	 */
 	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList) {
+		// check if queue has at least one technician, if not, then open no tech available window
+		if (techQ.size() <= 0) {
+			System.out.println("No techs available WINDOW");
+			return;
+		// check if repairPQ has at least one repair, if not, then open no repair available window
+		} else if (repairPQ.isEmpty()) {
+			System.out.println("No repairs available WINDOW");
+			return;
+		}
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
 		inProgressList.add(current);
+		System.out.println(current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
 	}
 	
 	/**
+	 * This method searches for the matching order number and if found
+	 * sets the completion date.  After that the repair is removed from
+	 * the inProgressList and placed into the completedList.  The technician
+	 * is also added back into the techQ.
+	 * 
 	 * @param inProgressList - LinkedList of repair objects currently being repaired
 	 * @param orderNum - order number of repair to be completed
 	 * @param completedList - LinkedList of completed repairs
 	 * @param techQ - queue data structure containing available technicians
-	 * @return - boolean value indicating if method was successful or not (order number found vs not found)
 	 */
-	static boolean completeRepair(LinkedList<Repair> inProgressList, int orderNum, LinkedList<Repair> completedList, Queue<Technician> techQ) {
+	static void completeRepair(LinkedList<Repair> inProgressList, int orderNum, LinkedList<Repair> completedList, Queue<Technician> techQ) {
+		// check if inProgressList has at least one element in it, if not, then open no repairs in progress window
+		if (inProgressList.size() <= 0) {
+			System.out.println("No repairs are in progress WINDOW");
+			return;
+		}
+		
+		// check each element in inProgressList for matching orderNum
 		for (Repair repairs : inProgressList) {
 			if(repairs.getOrderNum() == orderNum) {
 				Repair current = repairs;
@@ -161,11 +191,14 @@ public class RepairDriver {
 				techQ.add(currentTech);
 				completedList.add(current);
 				inProgressList.remove(current);
-				return true;
+				System.out.println("Order number: " + current.getOrderNum() + ", completed on " + current.getCompletionDate() + " by " + current.getTech().getFullName() + " WINDOW");
+				return;
 			}
 		}
-		System.out.println("Order Number Not Found");
-		return false;
+		
+		// message/window indication the order number was not found in the inProgressList
+		System.out.println("Order Number Not Found WINDOW");
+		return;
 	}
 
 }
