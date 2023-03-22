@@ -93,6 +93,15 @@ public class Technician {
 	public void setLastName(String lName) {
 		this.lastName = lName;
 	}
+	
+	/**
+	 * This method simply returns the first and last name of the tech in one string
+	 * 
+	 * @return - concantenated string conatining firstName and lastName 
+	 */
+	public String getFullName() {
+		return (firstName + " " + lastName);
+	}
 
 	@Override
 	public String toString() {
