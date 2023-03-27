@@ -38,10 +38,11 @@ public class RepairsNotStartedWindow extends JFrame {
 
 	private JPanel contentPane;
 
-	// private no-arg constructor to force usage of constructor that accepts a priorityQueue as an argument
+	// private no-arg constructor to force usage of constructor that accepts a
+	// priorityQueue as an argument
 	private RepairsNotStartedWindow() {
 	}
-	
+
 	public RepairsNotStartedWindow(PriorityQueue<Repair> repairsPQ) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,20 +52,21 @@ public class RepairsNotStartedWindow extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblHeader = new JLabel("Repairs Not Yet Started:");
 		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeader.setBounds(269, 15, 166, 14);
 		contentPane.add(lblHeader);
-		
+
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(52, 50, 256, 173);
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		String pQueueContents = "";
-		
-		// check if repairPQ is empty and if so set pQueueContents to indicate empty priority queue
-		if(repairsPQ.isEmpty()) {
+
+		// check if repairPQ is empty and if so set pQueueContents to indicate empty
+		// priority queue
+		if (repairsPQ.isEmpty()) {
 			pQueueContents = "All repairs are either in progress or have been completed";
 		} else {
 			for (Repair repairs : repairsPQ) {
@@ -73,8 +75,9 @@ public class RepairsNotStartedWindow extends JFrame {
 		}
 		textArea.append(pQueueContents);
 		contentPane.add(textArea);
-		
-		JScrollPane scrollPane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		JScrollPane scrollPane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(10, 50, 684, 173);
 		contentPane.add(scrollPane);
 
