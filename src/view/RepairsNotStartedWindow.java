@@ -56,7 +56,7 @@ public class RepairsNotStartedWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RepairsNotStartedWindow(PriorityQueue<Repair> repairPQ) {
+	public RepairsNotStartedWindow(PriorityQueue<Repair> repairsPQ) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 720, 300);
@@ -75,9 +75,13 @@ public class RepairsNotStartedWindow extends JFrame {
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		String pQueueContents = "";
-		for (Repair repairs : repairPQ) {
-			pQueueContents += (repairs.toString() + "\n");
-			//textArea.append(pQueueContents);
+		if(repairsPQ.size() == 0) {
+			pQueueContents = "All repairs are either in progress or have been completed";
+		} else {
+			for (Repair repairs : repairsPQ) {
+				pQueueContents += (repairs.toString() + "\n");
+				//textArea.append(pQueueContents);
+			}
 		}
 		textArea.append(pQueueContents);
 		contentPane.add(textArea);
