@@ -67,7 +67,7 @@ public class RepairsNotStartedWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblHeader = new JLabel("Repairs Not Yet Started:");
-		lblHeader.setBounds(137, 15, 118, 14);
+		lblHeader.setBounds(293, 15, 118, 14);
 		contentPane.add(lblHeader);
 		
 		JTextArea textArea = new JTextArea();
@@ -75,12 +75,13 @@ public class RepairsNotStartedWindow extends JFrame {
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		String pQueueContents = "";
-		if(repairsPQ.size() == 0) {
+		
+		// check if repairPQ is empty and if so set pQueueContents to indicate empty priority queue
+		if(repairsPQ.isEmpty()) {
 			pQueueContents = "All repairs are either in progress or have been completed";
 		} else {
 			for (Repair repairs : repairsPQ) {
 				pQueueContents += (repairs.toString() + "\n");
-				//textArea.append(pQueueContents);
 			}
 		}
 		textArea.append(pQueueContents);
