@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import model.Repair;
@@ -37,25 +38,10 @@ public class RepairsNotStartedWindow extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					RepairsNotStartedWindow frame = new RepairsNotStartedWindow(null);
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the frame.
-	 */
+	// private no-arg constructor to force usage of constructor that accepts a priorityQueue as an argument
+	private RepairsNotStartedWindow() {
+	}
+	
 	public RepairsNotStartedWindow(PriorityQueue<Repair> repairsPQ) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -67,7 +53,8 @@ public class RepairsNotStartedWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblHeader = new JLabel("Repairs Not Yet Started:");
-		lblHeader.setBounds(293, 15, 118, 14);
+		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHeader.setBounds(269, 15, 166, 14);
 		contentPane.add(lblHeader);
 		
 		JTextArea textArea = new JTextArea();
