@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import model.Repair;
@@ -37,9 +38,11 @@ public class InProgressWindow extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Create the frame.
-	 */
+	// no-arg constructor w/ private access modifier to force usage of other
+	// constructor
+	private InProgressWindow() {
+	}
+
 	public InProgressWindow(LinkedList<Repair> inProgressLL) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -49,19 +52,20 @@ public class InProgressWindow extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblHeader = new JLabel("Repairs In Prgress:");
+		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeader.setBounds(293, 15, 118, 14);
 		contentPane.add(lblHeader);
-		
+
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(52, 50, 256, 173);
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		String inProgressLLContents = "";
-		
+
 		// check if inProgressLL is empty and if so set text area to indicate empty list
-		if(inProgressLL.isEmpty()) {
+		if (inProgressLL.isEmpty()) {
 			inProgressLLContents = "There are no repairs currently in progress";
 		} else {
 			for (Repair repairs : inProgressLL) {
@@ -70,8 +74,9 @@ public class InProgressWindow extends JFrame {
 		}
 		textArea.append(inProgressLLContents);
 		contentPane.add(textArea);
-		
-		JScrollPane scrollPane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		JScrollPane scrollPane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(10, 50, 684, 173);
 		contentPane.add(scrollPane);
 
