@@ -254,9 +254,6 @@ public class MainWindow extends JFrame {
 							JOptionPane.showMessageDialog(null,
 									"Order number: " + current.getOrderNum() + ", completed on "
 											+ current.getCompletionDate() + " by " + current.getTech().getFullName());
-							// System.out.println("Order number: " + current.getOrderNum() + ", completed on
-							// " + current.getCompletionDate() + " by " + current.getTech().getFullName() +
-							// " WINDOW");
 							validInput = true;
 							return;
 						}
