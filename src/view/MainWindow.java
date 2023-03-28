@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -196,13 +198,48 @@ public class MainWindow extends JFrame {
 		while (!validInput && orderNumInput != null) {
 			try {
 				if (Integer.parseInt(orderNumInput) <= 0) {
-					orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ", "Order Number");
+					orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ",
+							"Order Number");
 				} else {
 					// check each element in inProgressList for matching orderNum
 					for (Repair repairs : inProgressList) {
-						if(repairs.getOrderNum() == Integer.parseInt(orderNumInput)) {
+						if (repairs.getOrderNum() == Integer.parseInt(orderNumInput)) {
+							// set matching repair order number to current variable
 							Repair current = repairs;
-							current.setCompletionDate(LocalDate.now());
+
+							// get completion date input from user
+							String dateInput = JOptionPane.showInputDialog("Enter the completion date: ", "MM/DD/YYYY");
+							// System.out.println(dateInput);
+
+							// if user clicks cancel or close window end method
+							if (dateInput == null || dateInput.equals("MM/DD/YYYY")) {
+								JOptionPane.showMessageDialog(null, "Order Number: " + current.getOrderNum()
+										+ " was not completed due to no date being entered.");
+								return;
+							}
+
+							// create variables used to parse date and ensure user input is valid format
+							boolean validDate = false;
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+							LocalDate completionDate = null;
+							while (!validDate) {
+								try {
+									completionDate = LocalDate.parse(dateInput, formatter);
+									validDate = true;
+								} catch (DateTimeParseException ex) {
+									dateInput = JOptionPane.showInputDialog(
+											"INVALID FORMAT! Enter the completion date: ", "MM/DD/YYYY");
+									// if user clicks cancel or close window end method
+									if (dateInput == null || dateInput.equals("MM/DD/YYYY")) {
+										JOptionPane.showMessageDialog(null, "Order Number: " + current.getOrderNum()
+												+ " was not completed due to no date being entered.");
+										return;
+									}
+								}
+							}
+
+							// dateInput from user was valid so set completionDate of current repair
+							current.setCompletionDate(completionDate);
 							Technician currentTech = current.getTech();
 							techQ.add(currentTech);
 							completedList.add(current);
@@ -215,7 +252,7 @@ public class MainWindow extends JFrame {
 							// " WINDOW");
 							validInput = true;
 							return;
-						} 
+						}
 					}
 					// message dialog indicating the order number was not found in the inProgressList
 					JOptionPane.showMessageDialog(null, "Order number not found");
