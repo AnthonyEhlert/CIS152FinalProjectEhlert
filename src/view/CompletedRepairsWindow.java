@@ -69,7 +69,7 @@ public class CompletedRepairsWindow extends JFrame {
 			completedLLContents = "No Repairs Have Been Completed";
 		} else {
 			for (Repair repairs : completedLL) {
-				completedLLContents += (repairs.toString() + "\n");
+				completedLLContents += ("Tech ID: " + repairs.getTech().getId() + ", Tech Name: " + repairs.getTech().getFullName() + ", completed Repair Number " + repairs.getOrderNum() + " on " + repairs.getCompletionDate() + "\n");
 			}
 		}
 		textArea.append(completedLLContents);
