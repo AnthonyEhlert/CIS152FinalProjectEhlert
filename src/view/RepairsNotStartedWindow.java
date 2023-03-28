@@ -70,7 +70,8 @@ public class RepairsNotStartedWindow extends JFrame {
 			pQueueContents = "All repairs are either in progress or have been completed";
 		} else {
 			for (Repair repairs : repairsPQ) {
-				pQueueContents += ("Priority Value: " + repairs.getPriority() + ", Order Number: " + repairs.getOrderNum() + ", Customer: " + repairs.getCustomer() + "\n");
+				pQueueContents += ("Priority Value: " + repairs.getPriority() + ", Order Number: "
+						+ repairs.getOrderNum() + ", Customer: " + repairs.getCustomer() + "\n");
 			}
 		}
 		textArea.append(pQueueContents);
