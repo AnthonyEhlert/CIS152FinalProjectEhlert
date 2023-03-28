@@ -53,7 +53,7 @@ public class InProgressWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblHeader = new JLabel("Repairs In Prgress:");
+		JLabel lblHeader = new JLabel("Repairs In Progress:");
 		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeader.setBounds(293, 15, 118, 14);
 		contentPane.add(lblHeader);
@@ -69,7 +69,9 @@ public class InProgressWindow extends JFrame {
 			inProgressLLContents = "There are no repairs currently in progress";
 		} else {
 			for (Repair repairs : inProgressLL) {
-				inProgressLLContents += (repairs.toString() + "\n");
+				inProgressLLContents += ("Priority Value: " + repairs.getPriority() + ", Order Number: "
+						+ repairs.getOrderNum() + ", Customer: " + repairs.getCustomer() + ", Assigned Tech: "
+						+ repairs.getTech().getFullName() + "\n");
 			}
 		}
 		textArea.append(inProgressLLContents);
