@@ -195,8 +195,15 @@ public class MainWindow extends JFrame {
 		boolean validInput = false;
 		String orderNumInput = JOptionPane.showInputDialog("Enter the order number you wish to complete: ", "Order Number");
 		
-		while (!validInput && orderNumInput != null) {
+		// exit method if cancel was clicked or ok was clicked with no input
+		if (orderNumInput == null || orderNumInput.equals("Order Number")) {
+			return;
+		}
+		
+		// while loop with try/catch block to ensure user input is valid
+		while (!validInput) {
 			try {
+				// check if order number is less than or equal to 0, if so, invalid entry and return to beginning of loop
 				if (Integer.parseInt(orderNumInput) <= 0) {
 					orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ",
 							"Order Number");
@@ -261,6 +268,10 @@ public class MainWindow extends JFrame {
 				}
 			} catch (NumberFormatException ex) {
 				orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ", "Order Number");
+				// exit method if cancel was clicked or ok was clicked with no input
+				if (orderNumInput == null || orderNumInput.equals("Order Number")) {
+					return;
+				}
 			}
 		}
 		
