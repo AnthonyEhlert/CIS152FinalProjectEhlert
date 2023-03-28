@@ -175,13 +175,13 @@ public class MainWindow extends JFrame {
 	}
 	
 	/**
-	 * This method searches for the matching order number and if found
-	 * sets the completion date.  After that the repair is removed from
+	 * This method prompts the user for the order number they wish to complete 
+	 * and searches for the matching order number and if found
+	 * prompts the user for the completion date.  After that the repair is removed from
 	 * the inProgressList and placed into the completedList.  The technician
 	 * is also added back into the techQ.
 	 * 
 	 * @param inProgressList - LinkedList of repair objects currently being repaired
-	 * @param orderNum - order number of repair to be completed
 	 * @param completedList - LinkedList of completed repairs
 	 * @param techQ - queue data structure containing available technicians
 	 */
