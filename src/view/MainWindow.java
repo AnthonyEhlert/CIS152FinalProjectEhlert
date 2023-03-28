@@ -167,7 +167,9 @@ public class MainWindow extends JFrame {
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
 		inProgressList.add(current);
-		System.out.println(current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
+		JOptionPane.showMessageDialog(null, current.getTech().getFullName() + " assigned to Order Number: "
+				+ current.getOrderNum() + ", Priority Value: " + current.getPriority());
+		//System.out.println(current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
 	}
 	
 	/**
@@ -205,15 +207,19 @@ public class MainWindow extends JFrame {
 							techQ.add(currentTech);
 							completedList.add(current);
 							inProgressList.remove(current);
-							JOptionPane.showMessageDialog(null, "Order number: " + current.getOrderNum() + ", completed on " + current.getCompletionDate() + " by " + current.getTech().getFullName());
-							System.out.println("Order number: " + current.getOrderNum() + ", completed on " + current.getCompletionDate() + " by " + current.getTech().getFullName() + " WINDOW");
+							JOptionPane.showMessageDialog(null,
+									"Order number: " + current.getOrderNum() + ", completed on "
+											+ current.getCompletionDate() + " by " + current.getTech().getFullName());
+							// System.out.println("Order number: " + current.getOrderNum() + ", completed on
+							// " + current.getCompletionDate() + " by " + current.getTech().getFullName() +
+							// " WINDOW");
 							validInput = true;
 							return;
 						} 
 					}
 					// message dialog indicating the order number was not found in the inProgressList
 					JOptionPane.showMessageDialog(null, "Order number not found");
-					System.out.println("Order Number Not Found WINDOW");
+					//System.out.println("Order Number Not Found WINDOW");
 					break;
 				}
 			} catch (NumberFormatException ex) {
