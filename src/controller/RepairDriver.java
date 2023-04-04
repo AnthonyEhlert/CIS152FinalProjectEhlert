@@ -143,11 +143,11 @@ public class RepairDriver {
 		System.out.println("\nREPAIRS ASSIGNED: ");
 		completeRepair(inProgressList, 2, completedList, techQ);
 		completeRepair(inProgressList, 6, completedList, techQ);
-		
+
 		// try to complete repair number not in inProgressList
 		System.out.println("\nTEST TO TRY AND COMPLETE ORDER #(2) NOT IN inProgressList");
 		completeRepair(inProgressList, 2, completedList, techQ);
-		
+
 		// print of sorted inProgress array elements
 		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER ASSIGNMENT OF REPAIRS: ");
 		inProgrgressArray = sortInProgressList(inProgressList);
@@ -171,7 +171,7 @@ public class RepairDriver {
 		for (Technician tech : techQ) {
 			System.out.print(tech.getFullName() + ", ");
 		}
-		
+
 		System.out.println();
 		System.out.println("\nSORTED REPAIRS LIST AFTER COMPLETEION OF REPAIRS: ");
 		completedList = sortCompletedList(completedList);
@@ -287,8 +287,8 @@ public class RepairDriver {
 	}
 
 	/**
-	 * This method sorts the repair objects in the inProgressList linked list using the insertion sort method
-	 * and returns a sorted array of the objects
+	 * This method sorts the repair objects in the inProgressList linked list using
+	 * the insertion sort method and returns a sorted array of the objects
 	 * 
 	 * @param inProgressList - repairs in progress list to be sorted
 	 * @return - sorted array of objects
@@ -324,8 +324,8 @@ public class RepairDriver {
 	}
 
 	/**
-	 * This method accepts a LinkedList of repair objects and sorts them using
-	 * the insertion sort method and then returns the sorted list
+	 * This method accepts a LinkedList of repair objects and sorts them using the
+	 * insertion sort method and then returns the sorted list
 	 * 
 	 * @param completedList - LinkedList to be sorted
 	 * @return - sorted LinkedList of repair objects
@@ -335,7 +335,7 @@ public class RepairDriver {
 		if (completedList.isEmpty()) {
 			return completedList;
 		}
-		
+
 		// create an empty sorted list
 		LinkedList<Repair> sortedList = new LinkedList<Repair>();
 
@@ -383,7 +383,7 @@ public class RepairDriver {
 //		for (Repair repair : sortedList) {
 //			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
 //		}
-		
+
 		// return sortedList
 		return sortedList;
 
