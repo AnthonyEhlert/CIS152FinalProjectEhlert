@@ -1,6 +1,4 @@
 package view;
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,7 +41,7 @@ public class InProgressWindow extends JFrame {
 	private InProgressWindow() {
 	}
 
-	public InProgressWindow(LinkedList<Repair> inProgressLL) {
+	public InProgressWindow(Object[] inProgressArr) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 720, 300);
@@ -65,13 +63,13 @@ public class InProgressWindow extends JFrame {
 		String inProgressLLContents = "";
 
 		// check if inProgressLL is empty and if so set text area to indicate empty list
-		if (inProgressLL.isEmpty()) {
+		if (inProgressArr.length == 0) {
 			inProgressLLContents = "There are no repairs currently in progress";
 		} else {
-			for (Repair repairs : inProgressLL) {
-				inProgressLLContents += ("Priority Value: " + repairs.getPriority() + ", Order Number: "
-						+ repairs.getOrderNum() + ", Customer: " + repairs.getCustomer() + ", Assigned Tech: "
-						+ repairs.getTech().getFullName() + "\n");
+			for (Object repairs : inProgressArr) {
+				inProgressLLContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
+						+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer()
+						+ ", Assigned Tech: " + ((Repair) repairs).getTech().getFullName() + "\n");
 			}
 		}
 		textArea.append(inProgressLLContents);

@@ -1,6 +1,4 @@
 package view;
-import java.util.PriorityQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,7 +41,7 @@ public class RepairsNotStartedWindow extends JFrame {
 	private RepairsNotStartedWindow() {
 	}
 
-	public RepairsNotStartedWindow(PriorityQueue<Repair> repairsPQ) {
+	public RepairsNotStartedWindow(Object[] repairsArray) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 720, 300);
@@ -66,12 +64,12 @@ public class RepairsNotStartedWindow extends JFrame {
 
 		// check if repairPQ is empty and if so set pQueueContents to indicate empty
 		// priority queue
-		if (repairsPQ.isEmpty()) {
+		if (repairsArray.length == 0) {
 			pQueueContents = "All repairs are either in progress or have been completed";
 		} else {
-			for (Repair repairs : repairsPQ) {
-				pQueueContents += ("Priority Value: " + repairs.getPriority() + ", Order Number: "
-						+ repairs.getOrderNum() + ", Customer: " + repairs.getCustomer() + "\n");
+			for (Object repairs : repairsArray) {
+				pQueueContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
+						+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer() + "\n");
 			}
 		}
 		textArea.append(pQueueContents);
