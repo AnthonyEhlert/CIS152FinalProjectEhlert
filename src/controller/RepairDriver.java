@@ -33,30 +33,31 @@ import model.Technician;
 public class RepairDriver {
 
 	public static void main(String[] args) {
-		
+
 		// create PriorityQueue to store repairs not started
 		PriorityQueue<Repair> repairsNotStartedQ = new PriorityQueue<Repair>();
-		
-		// creation of empty linked lists to store inProgress repairs and completed repairs
+
+		// creation of empty linked lists to store inProgress repairs and completed
+		// repairs
 		LinkedList<Repair> inProgressList = new LinkedList<Repair>();
 		LinkedList<Repair> completedList = new LinkedList<Repair>();
-		
+
 		// creation of repair objects
 		Repair repair1 = new Repair(1, 4, "Shield Inc.");
 		Repair repair2 = new Repair(2, 2, "Hydra Inc.");
 		Repair repair3 = new Repair(3, 3, "Stark Enterprises");
 		Repair repair4 = new Repair(4, 1, "Avengers");
-		
+
 		// create Repair objects with a priority value outside of 1-4
 		Repair repair5 = new Repair(5, 0, "USA Electronics");
 		Repair repair6 = new Repair(6, 5, "Ag Electronics LLC");
-		
+
 		// create Repair object with orderNum == 0
-		Repair repair0 = new Repair(0, 2, "Dark Order");
-		
+		Repair repair0 = new Repair(0, 4, "Dark Order");
+
 		// create Repair object with orderNum < 0
-		Repair repairNeg = new Repair(-1, 3, "X Force");
-		
+		Repair repairNeg = new Repair(-1, 4, "X Force");
+
 		// addition of repair objects to priority queue
 		repairsNotStartedQ.add(repair1);
 		repairsNotStartedQ.add(repair2);
@@ -66,20 +67,20 @@ public class RepairDriver {
 		repairsNotStartedQ.add(repair6);
 		repairsNotStartedQ.add(repair0);
 		repairsNotStartedQ.add(repairNeg);
-		
+
 		// printout of queue to ensure objects created correctly
 		System.out.println("Repairs In Priority Queue");
 		for (Repair repairs : repairsNotStartedQ) {
 			System.out.println(repairs.toString());
 		}
-		
+
 		// print out of elements in custPriorityQueue
 //		while (repairsNotStartedQ.peek() != null) {
 //			System.out.println(repairsNotStartedQ.poll());
 //		}
-		
+
 		// create Queue to store technicians
-		Queue<Technician> techQ = new LinkedList<Technician> ();
+		Queue<Technician> techQ = new LinkedList<Technician>();
 
 		// create technician objects
 		Technician tech1 = new Technician(1, "Tony", "Stark");
@@ -88,7 +89,7 @@ public class RepairDriver {
 		Technician tech4 = new Technician(4, "Bruce", "Banner");
 		Technician tech5 = new Technician(5, "Natasha", "Romanoff");
 		Technician tech6 = new Technician(6, "Clint", "Barton");
-		
+
 		// add techs to queue
 		techQ.add(tech1);
 		techQ.add(tech2);
@@ -96,64 +97,103 @@ public class RepairDriver {
 		techQ.add(tech4);
 		techQ.add(tech5);
 		techQ.add(tech6);
-		
+
 		System.out.println("\nTechnicians in Queue before assignment to repairs: ");
 		for (Technician tech : techQ) {
 			System.out.print(tech.getFirstName() + " " + tech.getLastName() + ", ");
 		}
-		
+
+		System.out.println();
+		System.out.println("\nSORTED NOT STARTED REPAIR Q Array before assignment to repairs: ");
+		Object[] repairArray = sortPriorityQueue(repairsNotStartedQ);
+		for (Object rpr : repairArray) {
+			System.out.println(rpr.toString());
+		}
+
+		System.out.println();
 		// assign techs to repair by calling assignTech method
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
-		
+		assignTech(repairsNotStartedQ, techQ, inProgressList);
+		assignTech(repairsNotStartedQ, techQ, inProgressList);
+
 		System.out.println();
 		System.out.println("\nTechnicians in Queue after assignment to repairs: ");
 		for (Technician tech : techQ) {
-			System.out.print(tech.getFirstName() + " " + tech.getLastName() + ", ");
+			System.out.println(tech.getFirstName() + " " + tech.getLastName() + ", ");
 		}
-		
+
 		System.out.println();
 		System.out.println("\nRepairs in Progress: ");
 		for (Repair repairs : inProgressList) {
 			System.out.println(repairs);
 		}
-		
+
+		System.out.println();
+		System.out.println("\nSORTED REPAIRS IN PROGRESS Array after assignment to repairs: ");
+		Object[] inProgrgressArray = sortInProgressList(inProgressList);
+		for (Object rpr : inProgrgressArray) {
+			System.out.println(rpr.toString());
+		}
+
 		// complete two of three repairs to test completeRepair method
+		System.out.println();
+		completeRepair(inProgressList, 2, completedList, techQ);
+		completeRepair(inProgressList, 6, completedList, techQ);
+		
+		// try to complete repair number not in inProgressList
+		System.out.println("\nTEST TO TRY AND COMPLETE ORDER #(2) NOT IN inProgressList");
 		completeRepair(inProgressList, 2, completedList, techQ);
 		
+		System.out.println();
+		System.out.println("\nSORTED REPAIRS IN PROGRESS Array after assignment to repairs: ");
+		inProgrgressArray = sortInProgressList(inProgressList);
+		for (Object rpr : inProgrgressArray) {
+			System.out.println(rpr.toString());
+		}
+
+		// print out of completed repairs
 		System.out.println("\nCompleted Repairs:");
 		for (Repair repairs : completedList) {
 			System.out.println(repairs);
 		}
-		
+
 		System.out.println();
 		System.out.println("\nRepairs in Progress after completion of repairs: ");
 		for (Repair repairs : inProgressList) {
 			System.out.println(repairs);
 		}
-		
+
 		System.out.println("\nTechnicians in Queue after completion of repairs: ");
 		for (Technician tech : techQ) {
 			System.out.print(tech.getFullName() + ", ");
 		}
+		
+		System.out.println("\nSORTED REPAIRS LIST after completion of repairs: ");
+		sortCompletedList(completedList);
+//		for (Repair repair : completedList) {
+//			System.out.println(repair.toString());
+//		}
 	}
-	
+
 	/**
-	 * This method assigns a technician from the techQ to the highest priority repair
-	 * in the repairPQ.  The tech that is assigned is removed for the techQ and the
-	 * repair is removed from the repairPQ and placed in the inProgressList
+	 * This method assigns a technician from the techQ to the highest priority
+	 * repair in the repairPQ. The tech that is assigned is removed for the techQ
+	 * and the repair is removed from the repairPQ and placed in the inProgressList
 	 * 
-	 * @param repairPQ - priority queue containing repairs not yet started
-	 * @param techQ - queue containing available technicians
+	 * @param repairPQ       - priority queue containing repairs not yet started
+	 * @param techQ          - queue containing available technicians
 	 * @param inProgressList - linked list to store repair jobs in progress
 	 */
 	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList) {
-		// check if queue has at least one technician, if not, then open no tech available window
+		// check if queue has at least one technician, if not, then open no tech
+		// available window
 		if (techQ.size() <= 0) {
 			System.out.println("No techs available WINDOW");
 			return;
-		// check if repairPQ has at least one repair, if not, then open no repair available window
+			// check if repairPQ has at least one repair, if not, then open no repair
+			// available window
 		} else if (repairPQ.isEmpty()) {
 			System.out.println("No repairs available WINDOW");
 			return;
@@ -161,44 +201,186 @@ public class RepairDriver {
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
 		inProgressList.add(current);
-		System.out.println(current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
+		System.out.println(
+				current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
 	}
-	
+
 	/**
-	 * This method searches for the matching order number and if found
-	 * sets the completion date.  After that the repair is removed from
-	 * the inProgressList and placed into the completedList.  The technician
-	 * is also added back into the techQ.
+	 * This method searches for the matching order number and if found sets the
+	 * completion date. After that the repair is removed from the inProgressList and
+	 * placed into the completedList. The technician is also added back into the
+	 * techQ.
 	 * 
 	 * @param inProgressList - LinkedList of repair objects currently being repaired
-	 * @param orderNum - order number of repair to be completed
-	 * @param completedList - LinkedList of completed repairs
-	 * @param techQ - queue data structure containing available technicians
+	 * @param orderNum       - order number of repair to be completed
+	 * @param completedList  - LinkedList of completed repairs
+	 * @param techQ          - queue data structure containing available technicians
 	 */
-	static void completeRepair(LinkedList<Repair> inProgressList, int orderNum, LinkedList<Repair> completedList, Queue<Technician> techQ) {
-		// check if inProgressList has at least one element in it, if not, then open no repairs in progress window
+	static void completeRepair(LinkedList<Repair> inProgressList, int orderNum, LinkedList<Repair> completedList,
+			Queue<Technician> techQ) {
+		// check if inProgressList has at least one element in it, if not, then open no
+		// repairs in progress window
 		if (inProgressList.size() <= 0) {
 			System.out.println("No repairs are in progress WINDOW");
 			return;
 		}
-		
+
 		// check each element in inProgressList for matching orderNum
 		for (Repair repairs : inProgressList) {
-			if(repairs.getOrderNum() == orderNum) {
+			if (repairs.getOrderNum() == orderNum) {
 				Repair current = repairs;
 				current.setCompletionDate(LocalDate.now());
 				Technician currentTech = current.getTech();
 				techQ.add(currentTech);
 				completedList.add(current);
 				inProgressList.remove(current);
-				System.out.println("Order number: " + current.getOrderNum() + ", completed on " + current.getCompletionDate() + " by " + current.getTech().getFullName() + " WINDOW");
+				// print statement for window/jFrame implementation in main driver
+				System.out.println("Order number: " + current.getOrderNum() + ", completed on "
+						+ current.getCompletionDate() + " by " + current.getTech().getFullName() + " WINDOW");
 				return;
 			}
 		}
-		
-		// message/window indication the order number was not found in the inProgressList
+
+		// message/window indication the order number was not found in the
+		// inProgressList
 		System.out.println("Order Number Not Found WINDOW");
 		return;
 	}
 
+	/**
+	 * This method sorts the repair Priority Queue using the insertion sort method
+	 * 
+	 * @param repairPQ - repair priority queue to be sorted
+	 * @return - sorted array of objects
+	 */
+	static Object[] sortPriorityQueue(PriorityQueue<Repair> repairPQ) {
+		Object[] repairArray = repairPQ.toArray();
+		int arrayLength = repairArray.length;
+
+		for (int i = 1; i < arrayLength; i++) {
+			// assign element at index i to object variable current
+			Object current = repairArray[i];
+
+			// assign priority value of current object variable to int variable to use for
+			// comparison
+			int keyPriority = ((Repair) repairArray[i]).getPriority();
+
+			// create variable for element index to the left of current object that gets
+			// decreased by one per iteration of while loop
+			int j = i - 1;
+
+			// check if j is greater or equal to zero and if so, compare the priority of the
+			// object at index j to the priority of the current element. If greater move
+			// element at index j to the right
+			while ((j >= 0) && ((Repair) repairArray[j]).getPriority() > keyPriority) {
+				repairArray[j + 1] = repairArray[j];
+				j = j - 1;
+			}
+			// assign stored current element to position j + 1 of array
+			repairArray[j + 1] = current;
+		}
+
+		return repairArray;
+	}
+
+	/**
+	 * This method sorts the repair objects in the inProgressList linked list using the insertion sort method
+	 * and returns a sorted array of the objects
+	 * 
+	 * @param inProgressList - repairs in progress list to be sorted
+	 * @return - sorted array of objects
+	 */
+	static Object[] sortInProgressList(LinkedList<Repair> inProgressList) {
+		Object[] inProgressArr = inProgressList.toArray();
+		int arrayLength = inProgressArr.length;
+
+		for (int i = 1; i < arrayLength; i++) {
+			// assign element at index i to object variable current
+			Object current = inProgressArr[i];
+
+			// assign priority value of current object variable to int variable to use for
+			// comparison
+			int keyPriority = ((Repair) inProgressArr[i]).getPriority();
+
+			// create variable for element index to the left of current object that gets
+			// decreased by one per iteration of while loop
+			int j = i - 1;
+
+			// check if j is greater or equal to zero and if so, compare the priority of the
+			// object at index j to the priority of the current element. If greater move
+			// element at index j to the right
+			while ((j >= 0) && ((Repair) inProgressArr[j]).getPriority() > keyPriority) {
+				inProgressArr[j + 1] = inProgressArr[j];
+				j = j - 1;
+			}
+			// assign stored current element to position j + 1 of array
+			inProgressArr[j + 1] = current;
+
+		}
+		return inProgressArr;
+	}
+
+	/**
+	 * This method accepts a LinkedList of repair objects and sorts them using
+	 * the insertion sort method and then returns the sorted list
+	 * 
+	 * @param completedList - LinkedList to be sorted
+	 * @return - sorted LinkedLIst of repair objects
+	 */
+	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
+		// create an empty sorted list
+		LinkedList<Repair> sortedList = new LinkedList<Repair>();
+
+		// traverse the list passed in and insert each element in a sorted way
+		// by comparing the techID number (smallest ID number at the head of linked
+		// list)
+
+		// assign head of completedList to current
+		Repair current = completedList.poll();
+
+		if (sortedList.size() == 0) {
+			sortedList.add(current);
+		}
+
+		while (!completedList.isEmpty()) {
+			current = completedList.poll();
+
+			// variable to keep track of sortedLisPosition
+			int listPos = 0;
+
+			// variable for sortedList size before comparisons
+			int sortListSize = sortedList.size();
+
+			// while loop to compare current element's techId to sortedList elements' techId
+			while (listPos < sortListSize) {
+				if (sortedList.get(listPos).getTech().getId() > current.getTech().getId()) {
+					Repair temp = sortedList.get(listPos);
+					sortedList.add(listPos, current);
+					sortedList.add(listPos + 1, temp);
+					listPos++;
+					// else if checks if just compared last element in sortedList
+					// and adds to end of sortedList if true
+				} else if (listPos == sortListSize - 1) {
+					sortedList.add(current);
+					listPos++;
+					// else statement means techId of current element is less than current element
+					// in
+					// sortedList and there are still more elements to check in sortedList and
+					// listPos should be increased by one to look at next element in sortedList
+				} else {
+					listPos++;
+				}
+			}
+		}
+
+		// print of sorted list for accuracy check
+		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
+		for (Repair repair : sortedList) {
+			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
+		}
+		
+		// return sortedList
+		return sortedList;
+
+	}
 }
