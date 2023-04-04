@@ -354,15 +354,16 @@ public class MainWindow extends JFrame {
 	 * the insertion sort method and then returns the sorted list
 	 * 
 	 * @param completedList - LinkedList to be sorted
-	 * @return - sorted LinkedLIst of repair objects
+	 * @return - sorted LinkedList of repair objects
 	 */
 	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
+		// first check is LinkedList passed in is empty. If true return empty list
+		if (completedList.isEmpty()) {
+			return completedList;
+		}
+		
 		// create an empty sorted list
 		LinkedList<Repair> sortedList = new LinkedList<Repair>();
-
-		// traverse the list passed in and insert each element in a sorted way
-		// by comparing the techID number (smallest ID number at the head of linked
-		// list)
 
 		// assign head of completedList to current
 		Repair current = completedList.poll();
@@ -371,6 +372,7 @@ public class MainWindow extends JFrame {
 			sortedList.add(current);
 		}
 
+		// while loop to traverse each element of list passed into method
 		while (!completedList.isEmpty()) {
 			current = completedList.poll();
 
@@ -403,10 +405,10 @@ public class MainWindow extends JFrame {
 		}
 
 		// print of sorted list for accuracy check
-		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
-		for (Repair repair : sortedList) {
-			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
-		}
+//		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
+//		for (Repair repair : sortedList) {
+//			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
+//		}
 		
 		// return sortedList
 		return sortedList;
