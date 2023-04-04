@@ -79,12 +79,6 @@ public class RunRepairJobGUI {
 		Repair repair13 = new Repair(13, 0, "USA Electronics");
 		Repair repair14 = new Repair(14, 5, "Ag Electronics LLC");
 
-		// create Repair object with orderNum == 0
-		// Repair repair0 = new Repair(0, 2, "Dark Order");
-
-		// create Repair object with orderNum < 0
-		// Repair repairNeg = new Repair(-1, 3, "X Force");
-
 		// add techs to queue
 		techQ.add(tech1);
 		techQ.add(tech2);
@@ -108,8 +102,6 @@ public class RunRepairJobGUI {
 		repairsNotStartedQ.add(repair12);
 		repairsNotStartedQ.add(repair13);
 		repairsNotStartedQ.add(repair14);
-		// repairsNotStartedQ.add(repair0);
-		// repairsNotStartedQ.add(repairNeg);
 
 		// create mainRepairWindow and pass in data structures
 		JFrame mainRepairWindow = new MainWindow(techQ, repairsNotStartedQ, inProgressList, completedList);
