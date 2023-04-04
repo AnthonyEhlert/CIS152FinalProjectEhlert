@@ -69,7 +69,7 @@ public class RepairDriver {
 		repairsNotStartedQ.add(repairNeg);
 
 		// printout of queue to ensure objects created correctly
-		System.out.println("Repairs In Priority Queue");
+		System.out.println("REPAIRS IN PRIORITY QUEUE:");
 		for (Repair repairs : repairsNotStartedQ) {
 			System.out.println(repairs.toString());
 		}
@@ -98,47 +98,49 @@ public class RepairDriver {
 		techQ.add(tech5);
 		techQ.add(tech6);
 
-		System.out.println("\nTechnicians in Queue before assignment to repairs: ");
+		// print of techs in techQ before assigning to array
+		System.out.println("\nTECHS IN QUEUE BEFORE ASSIGNMENT TO REPAIRS: ");
 		for (Technician tech : techQ) {
 			System.out.print(tech.getFirstName() + " " + tech.getLastName() + ", ");
 		}
 
+		// print of sorted repairs not started array
 		System.out.println();
-		System.out.println("\nSORTED NOT STARTED REPAIR Q Array before assignment to repairs: ");
+		System.out.println("\nSORTED NOT STARTED REPAIR Q ARRAY BEFORE ASSIGMENT TO REPAIRS: ");
 		Object[] repairArray = sortPriorityQueue(repairsNotStartedQ);
 		for (Object rpr : repairArray) {
 			System.out.println(rpr.toString());
 		}
 
-		System.out.println();
 		// assign techs to repair by calling assignTech method
+		System.out.println("\nREPAIRS ASSIGNED TO TECHS: ");
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 		assignTech(repairsNotStartedQ, techQ, inProgressList);
 
-		System.out.println();
-		System.out.println("\nTechnicians in Queue after assignment to repairs: ");
+		// print of techs in techQ after assigning to repairs
+		System.out.println("\nTECHS IN QUEUE AFTER ASSIGNMENT TO REPAIRS: ");
 		for (Technician tech : techQ) {
 			System.out.println(tech.getFirstName() + " " + tech.getLastName() + ", ");
 		}
 
-		System.out.println();
-		System.out.println("\nRepairs in Progress: ");
+		// print of inProgress List
+		System.out.println("\nREPAIRS IN PROGRESS BEFORE SORT: ");
 		for (Repair repairs : inProgressList) {
 			System.out.println(repairs);
 		}
 
-		System.out.println();
-		System.out.println("\nSORTED REPAIRS IN PROGRESS Array after assignment to repairs: ");
+		// print out of sorted inProgress array after assignment
+		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER ASSIGNMENT OF REPAIRS: ");
 		Object[] inProgrgressArray = sortInProgressList(inProgressList);
 		for (Object rpr : inProgrgressArray) {
 			System.out.println(rpr.toString());
 		}
 
 		// complete two of three repairs to test completeRepair method
-		System.out.println();
+		System.out.println("\nREPAIRS ASSIGNED: ");
 		completeRepair(inProgressList, 2, completedList, techQ);
 		completeRepair(inProgressList, 6, completedList, techQ);
 		
@@ -146,35 +148,36 @@ public class RepairDriver {
 		System.out.println("\nTEST TO TRY AND COMPLETE ORDER #(2) NOT IN inProgressList");
 		completeRepair(inProgressList, 2, completedList, techQ);
 		
-		System.out.println();
-		System.out.println("\nSORTED REPAIRS IN PROGRESS Array after assignment to repairs: ");
+		// print of sorted inProgress array elements
+		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER ASSIGNMENT OF REPAIRS: ");
 		inProgrgressArray = sortInProgressList(inProgressList);
 		for (Object rpr : inProgrgressArray) {
 			System.out.println(rpr.toString());
 		}
 
 		// print out of completed repairs
-		System.out.println("\nCompleted Repairs:");
+		System.out.println("\nCOMPLETED REPAIRS:");
 		for (Repair repairs : completedList) {
 			System.out.println(repairs);
 		}
 
-		System.out.println();
-		System.out.println("\nRepairs in Progress after completion of repairs: ");
+		// print of inProgress list contents after completing repairs
+		System.out.println("\nREPAIRS IN PROGRESS AFTER COMPLETION OF REPAIRS: ");
 		for (Repair repairs : inProgressList) {
 			System.out.println(repairs);
 		}
 
-		System.out.println("\nTechnicians in Queue after completion of repairs: ");
+		System.out.println("\nTECHS IN QUEUE AFTER COMPLETION OF REPAIRS: ");
 		for (Technician tech : techQ) {
 			System.out.print(tech.getFullName() + ", ");
 		}
 		
-		System.out.println("\nSORTED REPAIRS LIST after completion of repairs: ");
-		sortCompletedList(completedList);
-//		for (Repair repair : completedList) {
-//			System.out.println(repair.toString());
-//		}
+		System.out.println();
+		System.out.println("\nSORTED REPAIRS LIST AFTER COMPLETEION OF REPAIRS: ");
+		completedList = sortCompletedList(completedList);
+		for (Repair repair : completedList) {
+			System.out.println(repair.toString());
+		}
 	}
 
 	/**
@@ -325,15 +328,16 @@ public class RepairDriver {
 	 * the insertion sort method and then returns the sorted list
 	 * 
 	 * @param completedList - LinkedList to be sorted
-	 * @return - sorted LinkedLIst of repair objects
+	 * @return - sorted LinkedList of repair objects
 	 */
 	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
+		// first check is LinkedList passed in is empty. If true return empty list
+		if (completedList.isEmpty()) {
+			return completedList;
+		}
+		
 		// create an empty sorted list
 		LinkedList<Repair> sortedList = new LinkedList<Repair>();
-
-		// traverse the list passed in and insert each element in a sorted way
-		// by comparing the techID number (smallest ID number at the head of linked
-		// list)
 
 		// assign head of completedList to current
 		Repair current = completedList.poll();
@@ -342,6 +346,7 @@ public class RepairDriver {
 			sortedList.add(current);
 		}
 
+		// while loop to traverse each element of list passed into method
 		while (!completedList.isEmpty()) {
 			current = completedList.poll();
 
@@ -374,10 +379,10 @@ public class RepairDriver {
 		}
 
 		// print of sorted list for accuracy check
-		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
-		for (Repair repair : sortedList) {
-			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
-		}
+//		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
+//		for (Repair repair : sortedList) {
+//			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
+//		}
 		
 		// return sortedList
 		return sortedList;
