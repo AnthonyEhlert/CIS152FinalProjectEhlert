@@ -132,7 +132,8 @@ public class MainWindow extends JFrame {
 		JButton btnCompletedRepairs = new JButton("Completed Repairs");
 		btnCompletedRepairs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CompletedRepairsWindow cRW = new CompletedRepairsWindow(sortCompletedList(completedLL));
+				Object[] completedArr = sortCompletedList(completedLL);
+				CompletedRepairsWindow cRW = new CompletedRepairsWindow(completedArr);
 				cRW.setVisible(true);
 				//System.out.println("\"Completed Repairs\" clicked");
 			}
@@ -349,69 +350,105 @@ public class MainWindow extends JFrame {
 		return inProgressArr;
 	}
 	
-	/**
-	 * This method accepts a LinkedList of repair objects and sorts them using
-	 * the insertion sort method and then returns the sorted list
-	 * 
-	 * @param completedList - LinkedList to be sorted
-	 * @return - sorted LinkedList of repair objects
-	 */
-	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
-		// first check is LinkedList passed in is empty. If true return empty list
-		if (completedList.isEmpty()) {
-			return completedList;
+	static Object[] sortCompletedList(LinkedList<Repair> completedList) {
+		Object[] completedArr = completedList.toArray();
+		int arrayLength = completedArr.length;
+
+		for (int i = 1; i < arrayLength; i++) {
+			// assign element at index i to object variable current
+			Object current = completedArr[i];
+
+			// assign techId value of current object variable to int variable to use for
+			// comparison
+			int keyTechId = ((Repair) completedArr[i]).getTech().getId();
+
+			// create variable for element index to the left of current object that gets
+			// decreased by one per iteration of while loop
+			int j = i - 1;
+
+			// check if j is greater or equal to zero and if so, compare the techId of the
+			// object at index j to the techId of the current element. If greater move
+			// element at index j to the right
+			while ((j >= 0) && ((Repair) completedArr[j]).getTech().getId() > keyTechId) {
+				completedArr[j + 1] = completedArr[j];
+				j = j - 1;
+			}
+			// assign stored current element to position j + 1 of array
+			completedArr[j + 1] = current;
+
 		}
 		
-		// create an empty sorted list
-		LinkedList<Repair> sortedList = new LinkedList<Repair>();
-
-		// assign head of completedList to current
-		Repair current = completedList.poll();
-
-		if (sortedList.size() == 0) {
-			sortedList.add(current);
-		}
-
-		// while loop to traverse each element of list passed into method
-		while (!completedList.isEmpty()) {
-			current = completedList.poll();
-
-			// variable to keep track of sortedLisPosition
-			int listPos = 0;
-
-			// variable for sortedList size before comparisons
-			int sortListSize = sortedList.size();
-
-			// while loop to compare current element's techId to sortedList elements' techId
-			while (listPos < sortListSize) {
-				if (sortedList.get(listPos).getTech().getId() > current.getTech().getId()) {
-					Repair temp = sortedList.get(listPos);
-					sortedList.add(listPos, current);
-					sortedList.add(listPos + 1, temp);
-					listPos++;
-					// else if checks if just compared last element in sortedList
-					// and adds to end of sortedList if true
-				} else if (listPos == sortListSize - 1) {
-					sortedList.add(current);
-					listPos++;
-					// else statement means techId of current element is less than current element
-					// in
-					// sortedList and there are still more elements to check in sortedList and
-					// listPos should be increased by one to look at next element in sortedList
-				} else {
-					listPos++;
-				}
-			}
-		}
-
-		// print of sorted list for accuracy check
-//		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
-//		for (Repair repair : sortedList) {
-//			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
+		// print to ensure array sorted correctly
+//		for (Object repair : completedArr) {
+//			System.out.println(repair.toString() + " Tech ID: " + ((Repair) repair).getTech().getId());
 //		}
 		
-		// return sortedList
-		return sortedList;
-
+		return completedArr;
 	}
+	
+//	/**
+//	 * This method accepts a LinkedList of repair objects and sorts them using
+//	 * the insertion sort method and then returns the sorted list
+//	 * 
+//	 * @param completedList - LinkedList to be sorted
+//	 * @return - sorted LinkedList of repair objects
+//	 */
+//	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
+//		// first check is LinkedList passed in is empty. If true return empty list
+//		if (completedList.isEmpty()) {
+//			return completedList;
+//		}
+//		
+//		// create an empty sorted list
+//		LinkedList<Repair> sortedList = new LinkedList<Repair>();
+//
+//		// assign head of completedList to current
+//		Repair current = completedList.poll();
+//
+//		if (sortedList.size() == 0) {
+//			sortedList.add(current);
+//		}
+//
+//		// while loop to traverse each element of list passed into method
+//		while (!completedList.isEmpty()) {
+//			current = completedList.poll();
+//
+//			// variable to keep track of sortedLisPosition
+//			int listPos = 0;
+//
+//			// variable for sortedList size before comparisons
+//			int sortListSize = sortedList.size();
+//
+//			// while loop to compare current element's techId to sortedList elements' techId
+//			while (listPos < sortListSize) {
+//				if (sortedList.get(listPos).getTech().getId() > current.getTech().getId()) {
+//					Repair temp = sortedList.get(listPos);
+//					sortedList.add(listPos, current);
+//					sortedList.add(listPos + 1, temp);
+//					listPos++;
+//					// else if checks if just compared last element in sortedList
+//					// and adds to end of sortedList if true
+//				} else if (listPos == sortListSize - 1) {
+//					sortedList.add(current);
+//					listPos++;
+//					// else statement means techId of current element is less than current element
+//					// in
+//					// sortedList and there are still more elements to check in sortedList and
+//					// listPos should be increased by one to look at next element in sortedList
+//				} else {
+//					listPos++;
+//				}
+//			}
+//		}
+//
+//		// print of sorted list for accuracy check
+////		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
+////		for (Repair repair : sortedList) {
+////			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
+////		}
+//		
+//		// return sortedList
+//		return sortedList;
+//
+//	}
 }

@@ -1,6 +1,4 @@
 package view;
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,7 +41,7 @@ public class CompletedRepairsWindow extends JFrame {
 	private CompletedRepairsWindow() {
 	}
 
-	public CompletedRepairsWindow(LinkedList<Repair> completedLL) {
+	public CompletedRepairsWindow(Object[] completedArr) {
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 720, 300);
@@ -65,13 +63,13 @@ public class CompletedRepairsWindow extends JFrame {
 		String completedLLContents = "";
 
 		// check if completedLL is empty and if so set text area to indicate empty list
-		if (completedLL.isEmpty()) {
+		if (completedArr.length == 0) {
 			completedLLContents = "No Repairs Have Been Completed";
 		} else {
-			for (Repair repairs : completedLL) {
-				completedLLContents += ("Tech ID: " + repairs.getTech().getId() + ", Tech Name: "
-						+ repairs.getTech().getFullName() + ", Repair Number: " + repairs.getOrderNum()
-						+ " on " + repairs.getCompletionDate() + "\n");
+			for (Object repairs : completedArr) {
+				completedLLContents += ("Tech ID: " + ((Repair) repairs).getTech().getId() + ", Tech Name: "
+						+ ((Repair) repairs).getTech().getFullName() + ", Repair Number: " + ((Repair) repairs).getOrderNum()
+						+ " on " + ((Repair) repairs).getCompletionDate() + "\n");
 			}
 		}
 		textArea.append(completedLLContents);
