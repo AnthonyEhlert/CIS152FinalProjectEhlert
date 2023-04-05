@@ -43,7 +43,7 @@ import model.Technician;
  * my program.         
  *****************************************************************/
 public class MainWindow extends JFrame {
-	
+
 	// private constructor to force usage of other constructor
 	private MainWindow() {
 	}
@@ -51,18 +51,19 @@ public class MainWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainWindow(Queue<Technician> techQueue, PriorityQueue<Repair> repairsNotStartedPQ, LinkedList<Repair> inProgressLL, LinkedList<Repair> completedLL) {
+	public MainWindow(Queue<Technician> techQueue, PriorityQueue<Repair> repairsNotStartedPQ,
+			LinkedList<Repair> inProgressLL, LinkedList<Repair> completedLL) {
 		Queue<Technician> techQ = techQueue;
 		PriorityQueue<Repair> repairsNotStartedQ = repairsNotStartedPQ;
 		LinkedList<Repair> inProgressList = inProgressLL;
 		LinkedList<Repair> completedList = completedLL;
-		
+
 		// create frame
 		JFrame mainFrame = new JFrame();
 		mainFrame.setTitle("Repair Jobs");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setBounds(100, 100, 436, 300);
-		
+
 		// create mainPanel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,36 +71,36 @@ public class MainWindow extends JFrame {
 		// add panel to mainFrame
 		mainFrame.setContentPane(mainPanel);
 		mainPanel.setLayout(null);
-		
+
 		// MAIN WINDOW JLABEL HEADING
 		JLabel lblWindowTitle = new JLabel("Electronic Repair Dashboard");
 		lblWindowTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWindowTitle.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblWindowTitle.setBounds(111, 0, 206, 29);
 		mainPanel.add(lblWindowTitle);
-		
+
 		// ASSIGN NEXT REPAIR BUTTON
 		JButton btnAssignNextJob = new JButton("ASSIGN NEXT REPAIR");
 		btnAssignNextJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			assignTech(repairsNotStartedQ, techQ, inProgressList);
-			//System.out.println("\"ASSIGN NEXT JOB\" clicked");
+				assignTech(repairsNotStartedQ, techQ, inProgressList);
+				// System.out.println("\"ASSIGN NEXT JOB\" clicked");
 			}
 		});
 		btnAssignNextJob.setBounds(32, 88, 162, 47);
 		mainPanel.add(btnAssignNextJob);
-		
+
 		// COMPLETE REPAIR BUTTON
 		JButton btnCompleteRepair = new JButton("COMPLETE REPAIR");
 		btnCompleteRepair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				completeRepair(inProgressList, completedList, techQ);
-				//System.out.println("\"COMPLETE REPAIR\" clicked");
+				// System.out.println("\"COMPLETE REPAIR\" clicked");
 			}
 		});
 		btnCompleteRepair.setBounds(226, 88, 162, 47);
 		mainPanel.add(btnCompleteRepair);
-		
+
 		// REPAIRS NOT STARTED BUTTON
 		JButton btnRepairsNotStarted = new JButton("Repairs Not Started");
 		btnRepairsNotStarted.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -108,12 +109,12 @@ public class MainWindow extends JFrame {
 				Object[] sortedRepairArr = sortPriorityQueue(repairsNotStartedQ);
 				RepairsNotStartedWindow rNSW = new RepairsNotStartedWindow(sortedRepairArr);
 				rNSW.setVisible(true);
-				//System.out.println("\"Repairs Not Started\" clicked");
-				}
+				// System.out.println("\"Repairs Not Started\" clicked");
+			}
 		});
 		btnRepairsNotStarted.setBounds(10, 210, 118, 40);
 		mainPanel.add(btnRepairsNotStarted);
-		
+
 		// REPAIRS IN PROGRESS BUTTON
 		JButton btnRepairsInProgress = new JButton("Repairs In Progress");
 		btnRepairsInProgress.addActionListener(new ActionListener() {
@@ -121,13 +122,13 @@ public class MainWindow extends JFrame {
 				Object[] inProgressArr = sortInProgressList(inProgressLL);
 				InProgressWindow iPW = new InProgressWindow(inProgressArr);
 				iPW.setVisible(true);
-				//System.out.println("\"Repairs In Progress\" clicked");
+				// System.out.println("\"Repairs In Progress\" clicked");
 			}
 		});
 		btnRepairsInProgress.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnRepairsInProgress.setBounds(149, 210, 118, 40);
 		mainPanel.add(btnRepairsInProgress);
-		
+
 		// COMPLETED REPAIRS BUTTON
 		JButton btnCompletedRepairs = new JButton("Completed Repairs");
 		btnCompletedRepairs.addActionListener(new ActionListener() {
@@ -135,36 +136,38 @@ public class MainWindow extends JFrame {
 				Object[] completedArr = sortCompletedList(completedLL);
 				CompletedRepairsWindow cRW = new CompletedRepairsWindow(completedArr);
 				cRW.setVisible(true);
-				//System.out.println("\"Completed Repairs\" clicked");
+				// System.out.println("\"Completed Repairs\" clicked");
 			}
 		});
 		btnCompletedRepairs.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnCompletedRepairs.setBounds(288, 210, 118, 40);
 		mainPanel.add(btnCompletedRepairs);
-		
-		//set mainFrame to be visible
+
+		// set mainFrame to be visible
 		mainFrame.setVisible(true);
 
 	}
-	
+
 	//// STATIC METHODS TO BE USED WITHIN GUI \\\\
-	
+
 	/**
-	 * This method assigns a technician from the techQ to the highest priority repair
-	 * in the repairPQ.  The tech that is assigned is removed for the techQ and the
-	 * repair is removed from the repairPQ and placed in the inProgressList
+	 * This method assigns a technician from the techQ to the highest priority
+	 * repair in the repairPQ. The tech that is assigned is removed for the techQ
+	 * and the repair is removed from the repairPQ and placed in the inProgressList
 	 * 
-	 * @param repairPQ - priority queue containing repairs not yet started
-	 * @param techQ - queue containing available technicians
+	 * @param repairPQ       - priority queue containing repairs not yet started
+	 * @param techQ          - queue containing available technicians
 	 * @param inProgressList - linked list to store repair jobs in progress
 	 */
 	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList) {
-		// check if queue has at least one technician, if not, then open no tech available window
+		// check if queue has at least one technician, if not, then open no tech
+		// available window
 		if (techQ.size() <= 0) {
 			JOptionPane.showMessageDialog(null, "No Techs Available");
 			return;
-			
-		// check if repairPQ has at least one repair, if not, then open no repair available window
+
+			// check if repairPQ has at least one repair, if not, then open no repair
+			// available window
 		} else if (repairPQ.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No Repairs Avaliable");
 			return;
@@ -174,39 +177,44 @@ public class MainWindow extends JFrame {
 		inProgressList.add(current);
 		JOptionPane.showMessageDialog(null, current.getTech().getFullName() + " assigned to Order Number: "
 				+ current.getOrderNum() + ", Priority Value: " + current.getPriority());
-		//System.out.println(current.getTech().toString() + " assigned to order number: " + current.getOrderNum() + " WINDOW");
+		// System.out.println(current.getTech().toString() + " assigned to order number:
+		// " + current.getOrderNum() + " WINDOW");
 	}
-	
+
 	/**
-	 * This method prompts the user for the order number they wish to complete 
-	 * and searches for the matching order number and if found
-	 * prompts the user for the completion date.  After that the repair is removed from
-	 * the inProgressList and placed into the completedList.  The technician
-	 * is also added back into the techQ.
+	 * This method prompts the user for the order number they wish to complete and
+	 * searches for the matching order number and if found prompts the user for the
+	 * completion date. After that the repair is removed from the inProgressList and
+	 * placed into the completedList. The technician is also added back into the
+	 * techQ.
 	 * 
 	 * @param inProgressList - LinkedList of repair objects currently being repaired
-	 * @param completedList - LinkedList of completed repairs
-	 * @param techQ - queue data structure containing available technicians
+	 * @param completedList  - LinkedList of completed repairs
+	 * @param techQ          - queue data structure containing available technicians
 	 */
-	static void completeRepair(LinkedList<Repair> inProgressList, LinkedList<Repair> completedList, Queue<Technician> techQ) {
-		// check if inProgressList has at least one element in it, if not, then display message dialog
+	static void completeRepair(LinkedList<Repair> inProgressList, LinkedList<Repair> completedList,
+			Queue<Technician> techQ) {
+		// check if inProgressList has at least one element in it, if not, then display
+		// message dialog
 		if (inProgressList.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "There are no repairs currently in progress");
 			return;
 		}
-		
+
 		boolean validInput = false;
-		String orderNumInput = JOptionPane.showInputDialog("Enter the order number you wish to complete: ", "Order Number");
-		
+		String orderNumInput = JOptionPane.showInputDialog("Enter the order number you wish to complete: ",
+				"Order Number");
+
 		// exit method if cancel was clicked or ok was clicked with no input
 		if (orderNumInput == null || orderNumInput.equals("Order Number")) {
 			return;
 		}
-		
+
 		// while loop with try/catch block to ensure user input is valid
 		while (!validInput) {
 			try {
-				// check if order number is less than or equal to 0, if so, invalid entry and return to beginning of loop
+				// check if order number is less than or equal to 0, if so, invalid entry and
+				// return to beginning of loop
 				if (Integer.parseInt(orderNumInput) <= 0) {
 					orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ",
 							"Order Number");
@@ -261,22 +269,24 @@ public class MainWindow extends JFrame {
 							return;
 						}
 					}
-					// message dialog indicating the order number was not found in the inProgressList
+					// message dialog indicating the order number was not found in the
+					// inProgressList
 					JOptionPane.showMessageDialog(null, "Order number not found");
-					//System.out.println("Order Number Not Found WINDOW");
+					// System.out.println("Order Number Not Found WINDOW");
 					break;
 				}
 			} catch (NumberFormatException ex) {
-				orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ", "Order Number");
+				orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ",
+						"Order Number");
 				// exit method if cancel was clicked or ok was clicked with no input
 				if (orderNumInput == null || orderNumInput.equals("Order Number")) {
 					return;
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * This method sorts the repair Priority Queue using the insertion sort method
 	 * 
@@ -312,10 +322,10 @@ public class MainWindow extends JFrame {
 
 		return repairArray;
 	}
-	
+
 	/**
-	 * This method sorts the repair objects in the inProgressList linked list using the insertion sort method
-	 * and returns a sorted array of the objects
+	 * This method sorts the repair objects in the inProgressList linked list using
+	 * the insertion sort method and returns a sorted array of the objects
 	 * 
 	 * @param inProgressList - repairs in progress list to be sorted
 	 * @return - sorted array of objects
@@ -349,7 +359,7 @@ public class MainWindow extends JFrame {
 		}
 		return inProgressArr;
 	}
-	
+
 	static Object[] sortCompletedList(LinkedList<Repair> completedList) {
 		Object[] completedArr = completedList.toArray();
 		int arrayLength = completedArr.length;
@@ -377,78 +387,13 @@ public class MainWindow extends JFrame {
 			completedArr[j + 1] = current;
 
 		}
-		
+
 		// print to ensure array sorted correctly
 //		for (Object repair : completedArr) {
 //			System.out.println(repair.toString() + " Tech ID: " + ((Repair) repair).getTech().getId());
 //		}
-		
+
 		return completedArr;
 	}
 	
-//	/**
-//	 * This method accepts a LinkedList of repair objects and sorts them using
-//	 * the insertion sort method and then returns the sorted list
-//	 * 
-//	 * @param completedList - LinkedList to be sorted
-//	 * @return - sorted LinkedList of repair objects
-//	 */
-//	static LinkedList<Repair> sortCompletedList(LinkedList<Repair> completedList) {
-//		// first check is LinkedList passed in is empty. If true return empty list
-//		if (completedList.isEmpty()) {
-//			return completedList;
-//		}
-//		
-//		// create an empty sorted list
-//		LinkedList<Repair> sortedList = new LinkedList<Repair>();
-//
-//		// assign head of completedList to current
-//		Repair current = completedList.poll();
-//
-//		if (sortedList.size() == 0) {
-//			sortedList.add(current);
-//		}
-//
-//		// while loop to traverse each element of list passed into method
-//		while (!completedList.isEmpty()) {
-//			current = completedList.poll();
-//
-//			// variable to keep track of sortedLisPosition
-//			int listPos = 0;
-//
-//			// variable for sortedList size before comparisons
-//			int sortListSize = sortedList.size();
-//
-//			// while loop to compare current element's techId to sortedList elements' techId
-//			while (listPos < sortListSize) {
-//				if (sortedList.get(listPos).getTech().getId() > current.getTech().getId()) {
-//					Repair temp = sortedList.get(listPos);
-//					sortedList.add(listPos, current);
-//					sortedList.add(listPos + 1, temp);
-//					listPos++;
-//					// else if checks if just compared last element in sortedList
-//					// and adds to end of sortedList if true
-//				} else if (listPos == sortListSize - 1) {
-//					sortedList.add(current);
-//					listPos++;
-//					// else statement means techId of current element is less than current element
-//					// in
-//					// sortedList and there are still more elements to check in sortedList and
-//					// listPos should be increased by one to look at next element in sortedList
-//				} else {
-//					listPos++;
-//				}
-//			}
-//		}
-//
-//		// print of sorted list for accuracy check
-////		System.out.println("\nSORTED LIST ELEMENTS AFTER SORT: ");
-////		for (Repair repair : sortedList) {
-////			System.out.println(repair.toString() + " Tech ID: " + repair.getTech().getId());
-////		}
-//		
-//		// return sortedList
-//		return sortedList;
-//
-//	}
 }
