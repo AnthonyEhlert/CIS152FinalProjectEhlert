@@ -68,8 +68,8 @@ public class CompletedRepairsWindow extends JFrame {
 		} else {
 			for (Object repairs : completedArr) {
 				completedLLContents += ("Tech ID: " + ((Repair) repairs).getTech().getId() + ", Tech Name: "
-						+ ((Repair) repairs).getTech().getFullName() + ", Repair Number: " + ((Repair) repairs).getOrderNum()
-						+ " on " + ((Repair) repairs).getCompletionDate() + "\n");
+						+ ((Repair) repairs).getTech().getFullName() + ", Repair Number: "
+						+ ((Repair) repairs).getOrderNum() + " on " + ((Repair) repairs).getCompletionDate() + "\n");
 			}
 		}
 		textArea.append(completedLLContents);
