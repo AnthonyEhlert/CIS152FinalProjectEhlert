@@ -62,16 +62,12 @@ public class InProgressWindow extends JFrame {
 		textArea.setEditable(false);
 		String inProgressLLContents = "";
 
-		// check if inProgressLL is empty and if so set text area to indicate empty list
-		if (inProgressArr.length == 0) {
-			inProgressLLContents = "There are no repairs currently in progress";
-		} else {
-			for (Object repairs : inProgressArr) {
-				inProgressLLContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
-						+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer()
-						+ ", Assigned Tech: " + ((Repair) repairs).getTech().getFullName() + "\n");
-			}
+		for (Object repairs : inProgressArr) {
+			inProgressLLContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
+					+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer()
+					+ ", Assigned Tech: " + ((Repair) repairs).getTech().getFullName() + "\n");
 		}
+
 		textArea.append(inProgressLLContents);
 		contentPane.add(textArea);
 

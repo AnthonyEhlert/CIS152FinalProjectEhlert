@@ -62,16 +62,12 @@ public class CompletedRepairsWindow extends JFrame {
 		textArea.setEditable(false);
 		String completedLLContents = "";
 
-		// check if completedLL is empty and if so set text area to indicate empty list
-		if (completedArr.length == 0) {
-			completedLLContents = "No Repairs Have Been Completed";
-		} else {
-			for (Object repairs : completedArr) {
-				completedLLContents += ("Tech ID: " + ((Repair) repairs).getTech().getId() + ", Tech Name: "
-						+ ((Repair) repairs).getTech().getFullName() + ", Repair Number: "
-						+ ((Repair) repairs).getOrderNum() + " on " + ((Repair) repairs).getCompletionDate() + "\n");
-			}
+		for (Object repairs : completedArr) {
+			completedLLContents += ("Tech ID: " + ((Repair) repairs).getTech().getId() + ", Tech Name: "
+					+ ((Repair) repairs).getTech().getFullName() + ", Repair Number: "
+					+ ((Repair) repairs).getOrderNum() + " on " + ((Repair) repairs).getCompletionDate() + "\n");
 		}
+
 		textArea.append(completedLLContents);
 		contentPane.add(textArea);
 

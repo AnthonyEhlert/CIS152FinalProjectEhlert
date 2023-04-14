@@ -62,15 +62,9 @@ public class RepairsNotStartedWindow extends JFrame {
 		textArea.setEditable(false);
 		String pQueueContents = "";
 
-		// check if repairPQ is empty and if so set pQueueContents to indicate empty
-		// priority queue
-		if (repairsArray.length == 0) {
-			pQueueContents = "All repairs are either in progress or have been completed";
-		} else {
-			for (Object repairs : repairsArray) {
-				pQueueContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
-						+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer() + "\n");
-			}
+		for (Object repairs : repairsArray) {
+			pQueueContents += ("Priority Value: " + ((Repair) repairs).getPriority() + ", Order Number: "
+					+ ((Repair) repairs).getOrderNum() + ", Customer: " + ((Repair) repairs).getCustomer() + "\n");
 		}
 		textArea.append(pQueueContents);
 		contentPane.add(textArea);
