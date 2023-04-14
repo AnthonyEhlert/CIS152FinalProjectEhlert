@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import exceptions.OrderNumNotFoundException;
+import exceptions.RepairListEmptyException;
+import exceptions.RepairQueueEmptyException;
+import exceptions.TechQueueEmptyException;
 import model.Repair;
 import model.Technician;
 
@@ -32,7 +36,7 @@ import model.Technician;
  *****************************************************************/
 public class RepairDriver {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws TechQueueEmptyException {
 
 		// create PriorityQueue to store repairs not started
 		PriorityQueue<Repair> repairsNotStartedQ = new PriorityQueue<Repair>();
@@ -42,6 +46,28 @@ public class RepairDriver {
 		LinkedList<Repair> inProgressList = new LinkedList<Repair>();
 		LinkedList<Repair> completedList = new LinkedList<Repair>();
 
+		// create Queue to store technicians
+		Queue<Technician> techQ = new LinkedList<Technician>();
+
+		// test empty repair priority queue customer exception
+		System.out.println("REPAIR_QUEUE_EMPTY_EXCEPTION TEST");
+		Object[] repairArray = null;
+		try {
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+			sortPriorityQueue(repairsNotStartedQ);
+
+		} catch (RepairQueueEmptyException e) {
+			System.out.println("RepairQueueEmptyException THROWN WINDOW/ from assignTech()");
+		} catch (TechQueueEmptyException e) {
+			System.out.println("TechQueueEmptyException THROWN WINDOW/ from assignTech()");
+		}
+
+		try {
+			repairArray = sortPriorityQueue(repairsNotStartedQ);
+		} catch (RepairQueueEmptyException e) {
+			System.out.println("RepairQueueEmptyException THROWN WINDOW/ from sortPriortyQueue()");
+		}
+
 		// creation of repair objects
 		Repair repair1 = new Repair(1, 4, "Shield Inc.");
 		Repair repair2 = new Repair(2, 2, "Hydra Inc.");
@@ -50,13 +76,13 @@ public class RepairDriver {
 
 		// create Repair objects with a priority value outside of 1-4
 		Repair repair5 = new Repair(5, 0, "USA Electronics");
-		Repair repair6 = new Repair(6, 5, "Ag Electronics LLC");
+		Repair repair6 = new Repair(6, 5, "Priority_Out_Of_Range Customer");
 
 		// create Repair object with orderNum == 0
-		Repair repair0 = new Repair(0, 4, "Dark Order");
+		Repair repair0 = new Repair(0, 4, "Zero_Cust_Num Customer");
 
 		// create Repair object with orderNum < 0
-		Repair repairNeg = new Repair(-1, 4, "X Force");
+		Repair repairNeg = new Repair(-1, 4, "Neg_Cust_Num Customer");
 
 		// addition of repair objects to priority queue
 		repairsNotStartedQ.add(repair1);
@@ -69,18 +95,47 @@ public class RepairDriver {
 		repairsNotStartedQ.add(repairNeg);
 
 		// printout of queue to ensure objects created correctly
+		System.out.println("\nTEST TO ENSURE REPAIR OBJECTS CREATED CORRECTLY AND ADDED TO PRIORITY QUEUE");
 		System.out.println("REPAIRS IN PRIORITY QUEUE:");
 		for (Repair repairs : repairsNotStartedQ) {
 			System.out.println(repairs.toString());
 		}
 
-		// print out of elements in custPriorityQueue
-//		while (repairsNotStartedQ.peek() != null) {
-//			System.out.println(repairsNotStartedQ.poll());
-//		}
+		// test empty techQ exception
+		System.out.println("\nTECH_QUEUE_EMPTY_EXCEPTION TEST");
+		try {
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+		} catch (TechQueueEmptyException e1) {
+			System.out.println("TechQueueEmptyException THROWN WINDOW/ from assignTech()");
+		} catch (RepairQueueEmptyException e) {
+			System.out.println("RepairQueueEmptyException THROWN/ from assignTech()");
+		}
 
-		// create Queue to store technicians
-		Queue<Technician> techQ = new LinkedList<Technician>();
+		// RepairListEmptyException Tests
+		System.out.println("\nREPAIR_LIST_EMPTY_EXCEPTION TESTS");
+
+		System.out.println("Exception from completeRepair()/ Empty inProgress List");
+		try {
+			completeRepair(inProgressList, 2, completedList, techQ);
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from completeRepair()");
+		} catch (OrderNumNotFoundException e) {
+			System.out.println("OrderNumNotFoundException THROWN WINDOW/ from completeRepair()");
+		}
+
+		System.out.println("Exception from sortInProgressList()/ Empty inProgress List");
+		try {
+			sortInProgressList(inProgressList);
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from sortInProgressList()");
+		}
+
+		System.out.println("Exception from sortCompletedList()/ Empty completedList List");
+		try {
+			sortCompletedList(completedList);
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from sortCompletedList()");
+		}
 
 		// create technician objects
 		Technician tech1 = new Technician(1, "Tony", "Stark");
@@ -107,18 +162,28 @@ public class RepairDriver {
 		// print of sorted repairs not started array
 		System.out.println();
 		System.out.println("\nSORTED NOT STARTED REPAIR Q ARRAY BEFORE ASSIGMENT TO REPAIRS: ");
-		Object[] repairArray = sortPriorityQueue(repairsNotStartedQ);
-		for (Object rpr : repairArray) {
-			System.out.println(rpr.toString());
+		try {
+			repairArray = sortPriorityQueue(repairsNotStartedQ);
+			for (Object rpr : repairArray) {
+				System.out.println(rpr.toString());
+			}
+		} catch (RepairQueueEmptyException e) {
+			System.out.println("RepairQueueEmptyException THROWN/ from sortPriorityQueue()");
 		}
 
 		// assign techs to repair by calling assignTech method
 		System.out.println("\nREPAIRS ASSIGNED TO TECHS: ");
-		assignTech(repairsNotStartedQ, techQ, inProgressList);
-		assignTech(repairsNotStartedQ, techQ, inProgressList);
-		assignTech(repairsNotStartedQ, techQ, inProgressList);
-		assignTech(repairsNotStartedQ, techQ, inProgressList);
-		assignTech(repairsNotStartedQ, techQ, inProgressList);
+		try {
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+			assignTech(repairsNotStartedQ, techQ, inProgressList);
+		} catch (RepairQueueEmptyException e) {
+			System.out.println("RepairQueueEmptyException THROWN WINDOW/ from assignTech()");
+		} catch (TechQueueEmptyException e) {
+			System.out.println("TechQueueEmptyException THROWN WINDOW/ from assignTech()");
+		}
 
 		// print of techs in techQ after assigning to repairs
 		System.out.println("\nTECHS IN QUEUE AFTER ASSIGNMENT TO REPAIRS: ");
@@ -134,25 +199,46 @@ public class RepairDriver {
 
 		// print out of sorted inProgress array after assignment
 		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER ASSIGNMENT OF REPAIRS: ");
-		Object[] inProgrgressArray = sortInProgressList(inProgressList);
-		for (Object rpr : inProgrgressArray) {
-			System.out.println(rpr.toString());
+		Object[] inProgressArray = null;
+		try {
+			inProgressArray = sortInProgressList(inProgressList);
+			for (Repair repairs : inProgressList) {
+				System.out.println(repairs);
+			}
+		} catch (RepairListEmptyException e1) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ sortInProgressList()");
 		}
 
 		// complete two of three repairs to test completeRepair method
 		System.out.println("\nREPAIRS ASSIGNED: ");
-		completeRepair(inProgressList, 2, completedList, techQ);
-		completeRepair(inProgressList, 6, completedList, techQ);
+		try {
+			completeRepair(inProgressList, 2, completedList, techQ);
+			completeRepair(inProgressList, 6, completedList, techQ);
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from completeRepair()");
+		} catch (OrderNumNotFoundException e) {
+			System.out.println("OrderNumNotFoundException THROWN WINDOW/ from completeRepair()");
+		}
 
 		// try to complete repair number not in inProgressList
 		System.out.println("\nTEST TO TRY AND COMPLETE ORDER #(2) NOT IN inProgressList");
-		completeRepair(inProgressList, 2, completedList, techQ);
+		try {
+			completeRepair(inProgressList, 2, completedList, techQ);
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from completeRepair()");
+		} catch (OrderNumNotFoundException e) {
+			System.out.println("OrderNumNotFoundException THROWN WINDOW/ from completeRepair()");
+		}
 
 		// print of sorted inProgress array elements
-		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER ASSIGNMENT OF REPAIRS: ");
-		inProgrgressArray = sortInProgressList(inProgressList);
-		for (Object rpr : inProgrgressArray) {
-			System.out.println(rpr.toString());
+		System.out.println("\nSORTED IN PROGRESS REPAIRS ARRAY AFTER COMPLETION OF REPAIRS: ");
+		try {
+			inProgressArray = sortInProgressList(inProgressList);
+			for (Object rpr : inProgressArray) {
+				System.out.println(rpr.toString());
+			}
+		} catch (RepairListEmptyException e1) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ sortInProgressList()");
 		}
 
 		// print out of completed repairs
@@ -174,9 +260,14 @@ public class RepairDriver {
 
 		System.out.println();
 		System.out.println("\nSORTED REPAIRS ARRAY AFTER COMPLETEION OF REPAIRS: ");
-		Object[] completedArray = sortCompletedList(completedList);
-		for (Object rpr : completedArray) {
-			System.out.println(rpr.toString() + " Tech ID: " + ((Repair) rpr).getTech().getId());
+		Object[] completedArray = null;
+		try {
+			completedArray = sortCompletedList(completedList);
+			for (Object rpr : completedArray) {
+				System.out.println(rpr.toString() + " Tech ID: " + ((Repair) rpr).getTech().getId());
+			}
+		} catch (RepairListEmptyException e) {
+			System.out.println("RepairListEmptyException THROWN WINDOW/ from sortCompletedList()");
 		}
 	}
 
@@ -189,18 +280,18 @@ public class RepairDriver {
 	 * @param techQ          - queue containing available technicians
 	 * @param inProgressList - linked list to store repair jobs in progress
 	 */
-	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList) {
+	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList)
+			throws RepairQueueEmptyException, TechQueueEmptyException {
 		// check if queue has at least one technician, if not, then open no tech
 		// available window
-		if (techQ.size() <= 0) {
-			System.out.println("No techs available WINDOW");
-			return;
+		if (repairPQ.isEmpty()) {
+			throw new RepairQueueEmptyException();
+		} else if (techQ.size() <= 0) {
+			throw new TechQueueEmptyException();
 			// check if repairPQ has at least one repair, if not, then open no repair
-			// available window
-		} else if (repairPQ.isEmpty()) {
-			System.out.println("No repairs available WINDOW");
-			return;
+			// available window (throw exception)
 		}
+
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
 		inProgressList.add(current);
@@ -220,12 +311,12 @@ public class RepairDriver {
 	 * @param techQ          - queue data structure containing available technicians
 	 */
 	static void completeRepair(LinkedList<Repair> inProgressList, int orderNum, LinkedList<Repair> completedList,
-			Queue<Technician> techQ) {
+			Queue<Technician> techQ) throws RepairListEmptyException, OrderNumNotFoundException {
+
 		// check if inProgressList has at least one element in it, if not, then open no
 		// repairs in progress window
 		if (inProgressList.size() <= 0) {
-			System.out.println("No repairs are in progress WINDOW");
-			return;
+			throw new RepairListEmptyException();
 		}
 
 		// check each element in inProgressList for matching orderNum
@@ -244,10 +335,8 @@ public class RepairDriver {
 			}
 		}
 
-		// message/window indication the order number was not found in the
-		// inProgressList
-		System.out.println("Order Number Not Found WINDOW");
-		return;
+		// if for loop completes and never entered if block, order number not found
+		throw new OrderNumNotFoundException();
 	}
 
 	/**
@@ -256,7 +345,13 @@ public class RepairDriver {
 	 * @param repairPQ - repair priority queue to be sorted
 	 * @return - sorted array of objects
 	 */
-	static Object[] sortPriorityQueue(PriorityQueue<Repair> repairPQ) {
+	static Object[] sortPriorityQueue(PriorityQueue<Repair> repairPQ) throws RepairQueueEmptyException {
+
+		// empty repairPQ check
+		if (repairPQ.isEmpty()) {
+			throw new RepairQueueEmptyException();
+		}
+
 		Object[] repairArray = repairPQ.toArray();
 		int arrayLength = repairArray.length;
 
@@ -293,7 +388,12 @@ public class RepairDriver {
 	 * @param inProgressList - repairs in progress list to be sorted
 	 * @return - sorted array of objects
 	 */
-	static Object[] sortInProgressList(LinkedList<Repair> inProgressList) {
+	static Object[] sortInProgressList(LinkedList<Repair> inProgressList) throws RepairListEmptyException {
+		// empty inProgressList check
+		if (inProgressList.isEmpty()) {
+			throw new RepairListEmptyException();
+		}
+
 		Object[] inProgressArr = inProgressList.toArray();
 		int arrayLength = inProgressArr.length;
 
@@ -329,8 +429,15 @@ public class RepairDriver {
 	 * 
 	 * @param completedList - repairs in completed list to be sorted
 	 * @return - sorted array of objects
+	 * @throws RepairListEmptyException
 	 */
-	static Object[] sortCompletedList(LinkedList<Repair> completedList) {
+	static Object[] sortCompletedList(LinkedList<Repair> completedList) throws RepairListEmptyException {
+
+		// empty completedList check
+		if (completedList.isEmpty()) {
+			throw new RepairListEmptyException();
+		}
+
 		Object[] completedArr = completedList.toArray();
 		int arrayLength = completedArr.length;
 
@@ -357,11 +464,6 @@ public class RepairDriver {
 			completedArr[j + 1] = current;
 
 		}
-
-		// print to ensure array sorted correctly
-//		for (Object repair : completedArr) {
-//			System.out.println(repair.toString() + " Tech ID: " + ((Repair) repair).getTech().getId());
-//		}
 
 		return completedArr;
 	}
