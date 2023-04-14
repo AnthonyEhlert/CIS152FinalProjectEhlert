@@ -3,6 +3,7 @@ package controller;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import exceptions.TechQueueEmptyException;
 import model.Technician;
 
 /*****************************************************************
@@ -30,11 +31,21 @@ import model.Technician;
 public class TechnicianDriver {
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws TechQueueEmptyException {
 		
 		// create Queue to store technicians
 		Queue<Technician> techQ = new LinkedList<Technician> ();
 
+		// test TechQueueEmptyException
+		System.out.println("TECH_QUEUE_EMPTY_EXCEPTION TEST");
+		try {
+			if (techQ.isEmpty()) {
+				throw new TechQueueEmptyException();
+			} 
+		} catch (TechQueueEmptyException e) {
+			System.out.println("TechQueueEmptyException THROWN");
+		}
+		
 		// create technician objects
 		Technician tech1 = new Technician(1, "Tony", "Stark");
 		Technician tech2 = new Technician(2, "Steve", "Rodgers");
@@ -51,24 +62,49 @@ public class TechnicianDriver {
 		techQ.add(tech5);
 		techQ.add(tech6);
 		
+		// test to ensure all techs have been added to queue
+		System.out.println("\nTEST TO ENSURE ALL 6 TECHS ARE IN QUEUE AFTER ADDING");
+		System.out.println("TECHS IN QUEUE:");
+		for (Technician tech : techQ) {
+			System.out.println(tech.toString());
+		}
+		
 		// grab first tech from queue and ensure no longer in queue
+		System.out.println("\nTEST TO ENSURE 5 TECHS ARE IN QUEUE AFTER FIRST REMOVED");
 		Technician tech1Removed = techQ.poll();
-		System.out.println(tech1Removed.toString());
-		System.out.println(techQ.toString());
+		System.out.println(tech1Removed.toString() + " REMOVED");
+		System.out.println("TECHS REMAINING IN QUEUE:");
+		for (Technician tech : techQ) {
+			System.out.println(tech.toString());
+		}
 		
 		// grab next tech from queue and ensure no longer in queue
+		System.out.println("\nTEST TO ENSURE 4 TECHS ARE IN QUEUE AFTER SECOND REMOVED");
 		Technician tech2Removed = techQ.poll();
-		System.out.println(tech2Removed.toString());
-		System.out.println(techQ.toString());
+		System.out.println(tech2Removed.toString() + " REMOVED");
+		System.out.println("TECHS REMAINING IN QUEUE:");
+		for (Technician tech : techQ) {
+			System.out.println(tech.toString());
+		}
+		
 		
 		// add tech1 and tech2 back into techQ
+		System.out.println("\nTEST TO ENSURE 6 TECHS ARE IN QUEUE AFTER ADDING REMOVED TECHS");
 		techQ.add(tech1Removed);
 		techQ.add(tech2Removed);
+		System.out.println("TECHS IN QUEUE:");
+		for (Technician tech : techQ) {
+			System.out.println(tech.toString());
+		}
 		
 		// grab next tech from queue and ensure it is tech3
+		System.out.println("\nTEST TO ENSURE TECH 3 IS REMOVED(FIFO TEST)");
 		Technician tech3Removed = techQ.poll();
-		System.out.println(tech3Removed.toString());
-		System.out.println(techQ.toString());
+		System.out.println(tech3Removed.toString() + " REMOVED");
+		System.out.println("TECHS REMAINING IN QUEUE:");
+		for (Technician tech : techQ) {
+			System.out.println(tech.toString());
+		}
 		
 	}
 
