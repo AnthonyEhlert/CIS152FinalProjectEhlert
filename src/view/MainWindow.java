@@ -17,6 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import exceptions.OrderNumNotFoundException;
+import exceptions.RepairListEmptyException;
+import exceptions.RepairQueueEmptyException;
+import exceptions.TechQueueEmptyException;
 import model.Repair;
 import model.Technician;
 
@@ -83,7 +87,13 @@ public class MainWindow extends JFrame {
 		JButton btnAssignNextJob = new JButton("ASSIGN NEXT REPAIR");
 		btnAssignNextJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				assignTech(repairsNotStartedQ, techQ, inProgressList);
+				try {
+					assignTech(repairsNotStartedQ, techQ, inProgressList);
+				} catch (RepairQueueEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "No Repairs Avaliable");
+				} catch (TechQueueEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "No Techs Available");
+				}
 				// System.out.println("\"ASSIGN NEXT JOB\" clicked");
 			}
 		});
@@ -94,7 +104,13 @@ public class MainWindow extends JFrame {
 		JButton btnCompleteRepair = new JButton("COMPLETE REPAIR");
 		btnCompleteRepair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				completeRepair(inProgressList, completedList, techQ);
+				try {
+					completeRepair(inProgressList, completedList, techQ);
+				} catch (RepairListEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "There are no repairs currently in progress");
+				} catch (OrderNumNotFoundException e1) {
+					JOptionPane.showMessageDialog(null, "Order number not found");
+				}
 				// System.out.println("\"COMPLETE REPAIR\" clicked");
 			}
 		});
@@ -106,10 +122,15 @@ public class MainWindow extends JFrame {
 		btnRepairsNotStarted.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnRepairsNotStarted.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] sortedRepairArr = sortPriorityQueue(repairsNotStartedQ);
-				RepairsNotStartedWindow rNSW = new RepairsNotStartedWindow(sortedRepairArr);
-				rNSW.setVisible(true);
-				// System.out.println("\"Repairs Not Started\" clicked");
+				Object[] sortedRepairArr = null;
+				try {
+					sortedRepairArr = sortPriorityQueue(repairsNotStartedQ);
+					RepairsNotStartedWindow rNSW = new RepairsNotStartedWindow(sortedRepairArr);
+					rNSW.setVisible(true);
+					// System.out.println("\"Repairs Not Started\" clicked");
+				} catch (RepairQueueEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "All Repairs Have Been Started.");
+				}
 			}
 		});
 		btnRepairsNotStarted.setBounds(10, 210, 118, 40);
@@ -119,10 +140,15 @@ public class MainWindow extends JFrame {
 		JButton btnRepairsInProgress = new JButton("Repairs In Progress");
 		btnRepairsInProgress.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] inProgressArr = sortInProgressList(inProgressLL);
-				InProgressWindow iPW = new InProgressWindow(inProgressArr);
-				iPW.setVisible(true);
-				// System.out.println("\"Repairs In Progress\" clicked");
+				try {
+					Object[] inProgressArr = sortInProgressList(inProgressLL);
+					InProgressWindow iPW = new InProgressWindow(inProgressArr);
+					iPW.setVisible(true);
+					// System.out.println("\"Repairs In Progress\" clicked");
+				} catch (RepairListEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "No Repairs Are Currently In Progress.");
+				}
+
 			}
 		});
 		btnRepairsInProgress.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -133,10 +159,15 @@ public class MainWindow extends JFrame {
 		JButton btnCompletedRepairs = new JButton("Completed Repairs");
 		btnCompletedRepairs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] completedArr = sortCompletedList(completedLL);
-				CompletedRepairsWindow cRW = new CompletedRepairsWindow(completedArr);
-				cRW.setVisible(true);
-				// System.out.println("\"Completed Repairs\" clicked");
+				Object[] completedArr;
+				try {
+					completedArr = sortCompletedList(completedLL);
+					CompletedRepairsWindow cRW = new CompletedRepairsWindow(completedArr);
+					cRW.setVisible(true);
+					// System.out.println("\"Completed Repairs\" clicked");
+				} catch (RepairListEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "No Repairs Have Been Completed.");
+				}
 			}
 		});
 		btnCompletedRepairs.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -159,18 +190,18 @@ public class MainWindow extends JFrame {
 	 * @param techQ          - queue containing available technicians
 	 * @param inProgressList - linked list to store repair jobs in progress
 	 */
-	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList) {
+	static void assignTech(PriorityQueue<Repair> repairPQ, Queue<Technician> techQ, LinkedList<Repair> inProgressList)
+			throws RepairQueueEmptyException, TechQueueEmptyException {
+
 		// check if queue has at least one technician, if not, then open no tech
 		// available window
 		if (techQ.size() <= 0) {
-			JOptionPane.showMessageDialog(null, "No Techs Available");
-			return;
+			throw new TechQueueEmptyException();
 
 			// check if repairPQ has at least one repair, if not, then open no repair
 			// available window
 		} else if (repairPQ.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No Repairs Avaliable");
-			return;
+			throw new RepairQueueEmptyException();
 		}
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
@@ -193,15 +224,17 @@ public class MainWindow extends JFrame {
 	 * @param techQ          - queue data structure containing available technicians
 	 */
 	static void completeRepair(LinkedList<Repair> inProgressList, LinkedList<Repair> completedList,
-			Queue<Technician> techQ) {
+			Queue<Technician> techQ) throws RepairListEmptyException, OrderNumNotFoundException {
 		// check if inProgressList has at least one element in it, if not, then display
 		// message dialog
 		if (inProgressList.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "There are no repairs currently in progress");
-			return;
+			throw new RepairListEmptyException();
 		}
 
+		// create variable for indicating valid input in while loop
 		boolean validInput = false;
+
+		// prompt user for order number
 		String orderNumInput = JOptionPane.showInputDialog("Enter the order number you wish to complete: ",
 				"Order Number");
 
@@ -269,11 +302,8 @@ public class MainWindow extends JFrame {
 							return;
 						}
 					}
-					// message dialog indicating the order number was not found in the
-					// inProgressList
-					JOptionPane.showMessageDialog(null, "Order number not found");
-					// System.out.println("Order Number Not Found WINDOW");
-					break;
+					// if for loop completes and never entered if block, order number not found
+					throw new OrderNumNotFoundException();
 				}
 			} catch (NumberFormatException ex) {
 				orderNumInput = JOptionPane.showInputDialog("INVALID ENTRY! Order Number to Complete: ",
@@ -293,7 +323,13 @@ public class MainWindow extends JFrame {
 	 * @param repairPQ - repair priority queue to be sorted
 	 * @return - sorted array of objects
 	 */
-	static Object[] sortPriorityQueue(PriorityQueue<Repair> repairPQ) {
+	static Object[] sortPriorityQueue(PriorityQueue<Repair> repairPQ) throws RepairQueueEmptyException {
+
+		// check if repair Priority Queue is empty and throw exception if true
+		if (repairPQ.isEmpty()) {
+			throw new RepairQueueEmptyException();
+		}
+
 		Object[] repairArray = repairPQ.toArray();
 		int arrayLength = repairArray.length;
 
@@ -330,7 +366,13 @@ public class MainWindow extends JFrame {
 	 * @param inProgressList - repairs in progress list to be sorted
 	 * @return - sorted array of objects
 	 */
-	static Object[] sortInProgressList(LinkedList<Repair> inProgressList) {
+	static Object[] sortInProgressList(LinkedList<Repair> inProgressList) throws RepairListEmptyException {
+
+		// check if repair Priority Queue is empty and throw exception if true
+		if (inProgressList.isEmpty()) {
+			throw new RepairListEmptyException();
+		}
+
 		Object[] inProgressArr = inProgressList.toArray();
 		int arrayLength = inProgressArr.length;
 
@@ -360,7 +402,13 @@ public class MainWindow extends JFrame {
 		return inProgressArr;
 	}
 
-	static Object[] sortCompletedList(LinkedList<Repair> completedList) {
+	static Object[] sortCompletedList(LinkedList<Repair> completedList) throws RepairListEmptyException {
+
+		// check if repair Priority Queue is empty and throw exception if true
+		if (completedList.isEmpty()) {
+			throw new RepairListEmptyException();
+		}
+
 		Object[] completedArr = completedList.toArray();
 		int arrayLength = completedArr.length;
 
@@ -388,12 +436,7 @@ public class MainWindow extends JFrame {
 
 		}
 
-		// print to ensure array sorted correctly
-//		for (Object repair : completedArr) {
-//			System.out.println(repair.toString() + " Tech ID: " + ((Repair) repair).getTech().getId());
-//		}
-
 		return completedArr;
 	}
-	
+
 }
