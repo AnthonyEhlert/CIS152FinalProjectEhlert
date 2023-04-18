@@ -129,7 +129,7 @@ public class MainWindow extends JFrame {
 					rNSW.setVisible(true);
 					// System.out.println("\"Repairs Not Started\" clicked");
 				} catch (RepairQueueEmptyException e1) {
-					JOptionPane.showMessageDialog(null, "All Repairs Have Been Started.");
+					JOptionPane.showMessageDialog(null, "No Repair Orders Need Assigned");
 				}
 			}
 		});
