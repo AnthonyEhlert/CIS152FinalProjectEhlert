@@ -206,7 +206,7 @@ public class MainWindow extends JFrame {
 		Repair current = repairPQ.poll();
 		current.setTech(techQ.poll());
 		inProgressList.add(current);
-		JOptionPane.showMessageDialog(null, current.getTech().getFullName() + " assigned to Order Number: "
+		JOptionPane.showMessageDialog(null, current.getTech().getFullName() + " assigned to Repair Order Number: "
 				+ current.getOrderNum() + ", Priority Value: " + current.getPriority());
 		// System.out.println(current.getTech().toString() + " assigned to order number:
 		// " + current.getOrderNum() + " WINDOW");

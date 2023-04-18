@@ -53,7 +53,7 @@ public class InProgressWindow extends JFrame {
 
 		JLabel lblHeader = new JLabel("Repair Orders In Progress:");
 		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
-		lblHeader.setBounds(293, 15, 118, 14);
+		lblHeader.setBounds(265, 15, 175, 14);
 		contentPane.add(lblHeader);
 
 		JTextArea textArea = new JTextArea();
