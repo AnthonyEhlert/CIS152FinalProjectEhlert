@@ -51,7 +51,7 @@ public class CompletedRepairsWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblHeader = new JLabel("Completed Repairs:");
+		JLabel lblHeader = new JLabel("Completed Repair Orders:");
 		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeader.setBounds(293, 15, 118, 14);
 		contentPane.add(lblHeader);

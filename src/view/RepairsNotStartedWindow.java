@@ -51,7 +51,7 @@ public class RepairsNotStartedWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblHeader = new JLabel("Repairs Not Yet Started:");
+		JLabel lblHeader = new JLabel("Repair Orders Not Yet Started:");
 		lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeader.setBounds(269, 15, 166, 14);
 		contentPane.add(lblHeader);

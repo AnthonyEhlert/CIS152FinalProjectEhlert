@@ -146,7 +146,7 @@ public class MainWindow extends JFrame {
 					iPW.setVisible(true);
 					// System.out.println("\"Repairs In Progress\" clicked");
 				} catch (RepairListEmptyException e1) {
-					JOptionPane.showMessageDialog(null, "No Repairs Are Currently In Progress.");
+					JOptionPane.showMessageDialog(null, "No Repair Orders Are Currently In Progress.");
 				}
 
 			}
@@ -166,7 +166,7 @@ public class MainWindow extends JFrame {
 					cRW.setVisible(true);
 					// System.out.println("\"Completed Repairs\" clicked");
 				} catch (RepairListEmptyException e1) {
-					JOptionPane.showMessageDialog(null, "No Repairs Have Been Completed.");
+					JOptionPane.showMessageDialog(null, "No Repair Orders Have Been Completed.");
 				}
 			}
 		});
