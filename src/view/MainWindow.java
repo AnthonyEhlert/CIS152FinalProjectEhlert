@@ -97,7 +97,7 @@ public class MainWindow extends JFrame {
 				// System.out.println("\"ASSIGN NEXT JOB\" clicked");
 			}
 		});
-		btnAssignNextJob.setBounds(32, 88, 162, 47);
+		btnAssignNextJob.setBounds(32, 88, 175, 47);
 		mainPanel.add(btnAssignNextJob);
 
 		// COMPLETE REPAIR BUTTON
@@ -114,7 +114,7 @@ public class MainWindow extends JFrame {
 				// System.out.println("\"COMPLETE REPAIR\" clicked");
 			}
 		});
-		btnCompleteRepair.setBounds(226, 88, 162, 47);
+		btnCompleteRepair.setBounds(226, 88, 175, 47);
 		mainPanel.add(btnCompleteRepair);
 
 		// REPAIRS NOT STARTED BUTTON
